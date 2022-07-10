@@ -1,15 +1,8 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Api\Data;
+namespace EPuzzle\CustomerPrice\Api\Data;
 
 /**
  * Used to CRUD the customer prices

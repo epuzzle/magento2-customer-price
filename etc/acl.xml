@@ -1,19 +1,11 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
--->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="ePuzzle_CustomerPrice::base" title="ePuzzle: Customer Prices" sortOrder="100">
-                    <resource id="ePuzzle_CustomerPrice::config" title="Module Configuration" sortOrder="10"/>
-                    <resource id="ePuzzle_CustomerPrice::webapi" title="Customer Prices Webapi" sortOrder="30"/>
+                <resource id="EPuzzle_CustomerPrice::base" title="Customer Prices" sortOrder="100">
+                    <resource id="EPuzzle_CustomerPrice::webapi" title="Webapi" sortOrder="10"/>
                 </resource>
             </resource>
         </resources>

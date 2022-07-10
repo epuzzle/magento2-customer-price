@@ -1,14 +1,6 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
--->
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-    <table name="ep_customer_price" resource="default" engine="innodb" comment="ePuzzle: Customer Price Table">
+    <table name="epuzzle_customer_price" resource="default" engine="innodb" comment="Customer Price Table">
         <column xsi:type="smallint" name="item_id" padding="6" unsigned="false" nullable="false" identity="true"
                 comment="Item ID"/>
         <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" comment="Product ID"/>
@@ -27,24 +19,24 @@
             <column name="item_id"/>
         </constraint>
         <constraint xsi:type="foreign" onDelete="CASCADE"
-                    table="ep_customer_price" column="product_id"
+                    table="epuzzle_customer_price" column="product_id"
                     referenceTable="catalog_product_entity" referenceColumn="entity_id"
-                    referenceId="EP_CUSTOMER_PRICE_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID"/>
+                    referenceId="EPUZZLE_CUSTOMER_PRICE_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID"/>
         <constraint xsi:type="foreign" onDelete="CASCADE"
-                    table="ep_customer_price" column="customer_id"
+                    table="epuzzle_customer_price" column="customer_id"
                     referenceTable="customer_entity" referenceColumn="entity_id"
-                    referenceId="EP_CUSTOMER_PRICE_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID"/>
+                    referenceId="EPUZZLE_CUSTOMER_PRICE_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID"/>
         <constraint xsi:type="foreign" onDelete="CASCADE"
-                    table="ep_customer_price" column="website_id"
+                    table="epuzzle_customer_price" column="website_id"
                     referenceTable="store_website" referenceColumn="website_id"
-                    referenceId="EP_CUSTOMER_PRICE_WEBSITE_ID_STORE_WEBSITE_WEBSITE_ID"/>
-        <index referenceId="EP_CUSTOMER_PRICE_PRODUCT_ID" indexType="btree">
+                    referenceId="EPUZZLE_CUSTOMER_PRICE_WEBSITE_ID_STORE_WEBSITE_WEBSITE_ID"/>
+        <index referenceId="EPUZZLE_CUSTOMER_PRICE_PRODUCT_ID" indexType="btree">
             <column name="product_id"/>
         </index>
-        <index referenceId="EP_CUSTOMER_PRICE_CUSTOMER_ID" indexType="btree">
+        <index referenceId="EPUZZLE_CUSTOMER_PRICE_CUSTOMER_ID" indexType="btree">
             <column name="customer_id"/>
         </index>
-        <index referenceId="EP_CUSTOMER_PRICE_PRODUCT_ID_CUSTOMER_ID_QTY_WEBSITE_ID" indexType="btree">
+        <index referenceId="EPUZZLE_CUSTOMER_PRICE_PRODUCT_ID_CUSTOMER_ID_QTY_WEBSITE_ID" indexType="btree">
             <column name="product_id"/>
             <column name="customer_id"/>
             <column name="qty"/>

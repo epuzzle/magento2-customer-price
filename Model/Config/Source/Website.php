@@ -1,15 +1,8 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Model\Config\Source;
+namespace EPuzzle\CustomerPrice\Model\Config\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
 use Magento\Store\Api\Data\WebsiteInterface;
@@ -27,7 +20,14 @@ class Website implements OptionSourceInterface
      */
     public const DEFAULT_WEBSITE_ID = 1;
 
+    /**
+     * @var CollectionFactory
+     */
     private CollectionFactory $collectionFactory;
+
+    /**
+     * @var string[]
+     */
     private array $options = [];
 
     /**

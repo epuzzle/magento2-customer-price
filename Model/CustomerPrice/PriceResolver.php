@@ -1,23 +1,19 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Model\CustomerPrice;
+namespace EPuzzle\CustomerPrice\Model\CustomerPrice;
 
-use ePuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
+use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
 
 /**
  * Resolving the customer price for the product
  */
 class PriceResolver
 {
+    /**
+     * @var CustomerPrice
+     */
     private CustomerPrice $resource;
 
     /**

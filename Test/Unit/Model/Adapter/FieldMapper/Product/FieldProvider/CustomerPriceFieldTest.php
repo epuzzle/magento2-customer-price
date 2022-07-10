@@ -1,23 +1,17 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Test\Unit\Model\Adapter\FieldMapper\Product\FieldProvider;
+namespace EPuzzle\CustomerPrice\Test\Unit\Model\Adapter\FieldMapper\Product\FieldProvider;
 
-use ePuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\CustomerPriceField;
-use ePuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
-use ePuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
+use EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\CustomerPriceField;
+use EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
+use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Model\ResourceModel\Customer\Collection;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory;
 use Magento\Elasticsearch\Model\Adapter\FieldMapper\Product\FieldProvider\FieldType\ConverterInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,7 +19,14 @@ use PHPUnit\Framework\TestCase;
  */
 class CustomerPriceFieldTest extends TestCase
 {
+    /**
+     * @var Collection|MockObject
+     */
     private Collection $customerCollection;
+
+    /**
+     * @var CustomerPriceField
+     */
     private CustomerPriceField $customerPriceField;
 
     /**

@@ -1,17 +1,10 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Test\Unit\Model\Command;
+namespace EPuzzle\CustomerPrice\Test\Unit\Model\Command;
 
-use ePuzzle\CustomerPrice\Model\Command\FlushCacheByTags;
+use EPuzzle\CustomerPrice\Model\Command\FlushCacheByTags;
 use Magento\Framework\App\Cache\StateInterface;
 use Magento\Framework\App\Cache\Tag\Resolver;
 use Magento\Framework\App\Cache\Type\Block;
@@ -19,6 +12,7 @@ use Magento\Framework\App\Cache\Type\Collection;
 use Magento\Framework\App\Cache\Type\FrontendPool;
 use Magento\Framework\Cache\FrontendInterface;
 use Magento\Framework\Model\AbstractModel;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,9 +20,24 @@ use PHPUnit\Framework\TestCase;
  */
 class FlushCacheByTagsTest extends TestCase
 {
+    /**
+     * @var FrontendPool|MockObject
+     */
     private FrontendPool $frontendPool;
+
+    /**
+     * @var StateInterface|MockObject
+     */
     private StateInterface $state;
+
+    /**
+     * @var Resolver|MockObject
+     */
     private Resolver $resolver;
+
+    /**
+     * @var FlushCacheByTags
+     */
     private FlushCacheByTags $flushCacheByTags;
 
     /**

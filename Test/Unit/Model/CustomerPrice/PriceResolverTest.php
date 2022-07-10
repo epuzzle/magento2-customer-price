@@ -1,20 +1,14 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Test\Unit\Model\CustomerPrice;
+namespace EPuzzle\CustomerPrice\Test\Unit\Model\CustomerPrice;
 
-use ePuzzle\CustomerPrice\Model\CustomerPrice\PriceResolver;
-use ePuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice as CustomerPriceResource;
+use EPuzzle\CustomerPrice\Model\CustomerPrice\PriceResolver;
+use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice as CustomerPriceResource;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Select;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,7 +16,14 @@ use PHPUnit\Framework\TestCase;
  */
 class PriceResolverTest extends TestCase
 {
+    /**
+     * @var AdapterInterface|MockObject
+     */
     private AdapterInterface $connection;
+
+    /**
+     * @var PriceResolver
+     */
     private PriceResolver $resolver;
 
     /**

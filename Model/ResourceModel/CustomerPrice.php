@@ -1,15 +1,8 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Model\ResourceModel;
+namespace EPuzzle\CustomerPrice\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
@@ -20,7 +13,7 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
  */
 class CustomerPrice extends AbstractDb
 {
-    public const TABLE_NAME = 'ep_customer_price';
+    public const TABLE_NAME = 'epuzzle_customer_price';
     public const PK = 'item_id';
 
     /**

@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Plugin\Framework\Pricing\Render\PriceBox;
+namespace EPuzzle\CustomerPrice\Plugin\Pricing\Render\PriceBox;
 
-use ePuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
-use ePuzzle\CustomerPrice\Model\Customer\ExistingCustomerPriceByStrategy;
+use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
+use EPuzzle\CustomerPrice\Model\Customer\ExistingCustomerPriceByStrategy;
 use Magento\Framework\Pricing\Render\PriceBox;
 
 /**
@@ -22,7 +15,14 @@ use Magento\Framework\Pricing\Render\PriceBox;
  */
 class AddCacheTagsToPriceBox
 {
+    /**
+     * @var CustomerProviderInterface
+     */
     private CustomerProviderInterface $customerProvider;
+
+    /**
+     * @var ExistingCustomerPriceByStrategy
+     */
     private ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy;
 
     /**
@@ -49,7 +49,8 @@ class AddCacheTagsToPriceBox
      */
     public function afterGetCacheKey(PriceBox $priceBox, string $cacheKey): string
     {
-        if (($customerId = $this->customerProvider->getCustomerId())
+        $customerId = $this->customerProvider->getCustomerId();
+        if ($customerId
             && $this->existingCustomerPriceByStrategy->execute(
                 (int)$customerId,
                 ExistingCustomerPriceByStrategy::STRATEGY_CUSTOMER

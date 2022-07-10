@@ -1,15 +1,8 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Model\Command;
+namespace EPuzzle\CustomerPrice\Model\Command;
 
 use Magento\Framework\App\Cache\StateInterface;
 use Magento\Framework\App\Cache\Tag\Resolver;
@@ -22,9 +15,24 @@ use Zend_Cache;
  */
 class FlushCacheByTags
 {
+    /**
+     * @var FrontendPool
+     */
     private FrontendPool $cachePool;
+
+    /**
+     * @var string[]
+     */
     private array $cacheList;
+
+    /**
+     * @var StateInterface
+     */
     private StateInterface $cacheState;
+
+    /**
+     * @var Resolver
+     */
     private Resolver $tagResolver;
 
     /**

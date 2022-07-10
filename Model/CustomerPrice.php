@@ -1,17 +1,10 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Model;
+namespace EPuzzle\CustomerPrice\Model;
 
-use ePuzzle\CustomerPrice\Api\Data\CustomerPriceInterface;
+use EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterface;
 use Magento\Framework\Model\AbstractModel;
 
 /**
@@ -22,8 +15,15 @@ use Magento\Framework\Model\AbstractModel;
  */
 class CustomerPrice extends AbstractModel implements CustomerPriceInterface
 {
-    protected $_cacheTag = 'ep_customer_price';
-    protected $_eventPrefix = 'ep_customer_price';
+    /**
+     * @var string
+     */
+    protected $_cacheTag = 'epuzzle_customer_price';
+
+    /**
+     * @var string
+     */
+    protected $_eventPrefix = 'epuzzle_customer_price';
 
     /**
      * @inheritDoc

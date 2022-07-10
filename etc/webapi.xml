@@ -1,42 +1,34 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
--->
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
     <route url="/V1/customer-price/:itemId" method="GET">
-        <service class="ePuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="get"/>
+        <service class="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="get"/>
         <resources>
-            <resource ref="ePuzzle_CustomerPrice::webapi"/>
+            <resource ref="EPuzzle_CustomerPrice::webapi"/>
         </resources>
     </route>
     <route url="/V1/customer-price" method="POST">
-        <service class="ePuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="save"/>
+        <service class="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="save"/>
         <resources>
-            <resource ref="ePuzzle_CustomerPrice::webapi"/>
+            <resource ref="EPuzzle_CustomerPrice::webapi"/>
         </resources>
     </route>
     <route url="/V1/customer-price/:itemId" method="PUT">
-        <service class="ePuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="save"/>
+        <service class="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="save"/>
         <resources>
-            <resource ref="ePuzzle_CustomerPrice::webapi"/>
+            <resource ref="EPuzzle_CustomerPrice::webapi"/>
         </resources>
     </route>
     <route url="/V1/customer-price/:itemId" method="DELETE">
-        <service class="ePuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="deleteById"/>
+        <service class="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="deleteById"/>
         <resources>
-            <resource ref="ePuzzle_CustomerPrice::webapi"/>
+            <resource ref="EPuzzle_CustomerPrice::webapi"/>
         </resources>
     </route>
     <route url="/V1/customer-price" method="GET">
-        <service class="ePuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="getList"/>
+        <service class="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="getList"/>
         <resources>
-            <resource ref="ePuzzle_CustomerPrice::webapi"/>
+            <resource ref="EPuzzle_CustomerPrice::webapi"/>
         </resources>
     </route>
 </routes>

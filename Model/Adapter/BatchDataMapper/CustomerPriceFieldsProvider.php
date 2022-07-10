@@ -1,19 +1,12 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Model\Adapter\BatchDataMapper;
+namespace EPuzzle\CustomerPrice\Model\Adapter\BatchDataMapper;
 
-use ePuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
-use ePuzzle\CustomerPrice\Model\Customer\GetScopeCustomerIdsGroupIds;
-use ePuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
+use EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
+use EPuzzle\CustomerPrice\Model\Customer\GetScopeCustomerIdsGroupIds;
+use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
 use Magento\AdvancedSearch\Model\Adapter\DataMapper\AdditionalFieldsProviderInterface;
 use Magento\CatalogSearch\Model\Indexer\Fulltext\Action\DataProvider;
 use Magento\Elasticsearch\Model\ResourceModel\Index;
@@ -26,11 +19,34 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
 {
+    /**
+     * @var CustomerPrice
+     */
     private CustomerPrice $resource;
+
+    /**
+     * @var Index
+     */
     private Index $priceResourceIndex;
+
+    /**
+     * @var DataProvider
+     */
     private DataProvider $dataProvider;
+
+    /**
+     * @var StoreManagerInterface
+     */
     private StoreManagerInterface $storeManager;
+
+    /**
+     * @var GetScopeCustomerIdsGroupIds
+     */
     private GetScopeCustomerIdsGroupIds $getScopeCustomerIdsGroupIds;
+
+    /**
+     * @var CustomerPriceFieldNameResolver
+     */
     private CustomerPriceFieldNameResolver $customerPriceFieldNameResolver;
 
     /**

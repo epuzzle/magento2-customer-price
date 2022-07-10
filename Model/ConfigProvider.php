@@ -1,15 +1,8 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Model;
+namespace EPuzzle\CustomerPrice\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
@@ -18,6 +11,9 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
  */
 class ConfigProvider
 {
+    /**
+     * @var ScopeConfigInterface
+     */
     private ScopeConfigInterface $scopeConfig;
 
     /**
@@ -38,6 +34,6 @@ class ConfigProvider
      */
     public function isEnabled(): bool
     {
-        return $this->scopeConfig->isSetFlag('ep_customer_price/general/enabled');
+        return $this->scopeConfig->isSetFlag('epuzzle_customer_price/general/enabled');
     }
 }

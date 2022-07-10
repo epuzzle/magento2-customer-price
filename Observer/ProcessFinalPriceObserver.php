@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Observer;
+namespace EPuzzle\CustomerPrice\Observer;
 
-use ePuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
-use ePuzzle\CustomerPrice\Model\CustomerPrice\PriceResolver;
+use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
+use EPuzzle\CustomerPrice\Model\CustomerPrice\PriceResolver;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
@@ -24,7 +17,14 @@ use Magento\Framework\Event\ObserverInterface;
  */
 class ProcessFinalPriceObserver implements ObserverInterface
 {
+    /**
+     * @var CustomerProviderInterface
+     */
     private CustomerProviderInterface $customerProvider;
+
+    /**
+     * @var PriceResolver
+     */
     private PriceResolver $customerPriceResolver;
 
     /**

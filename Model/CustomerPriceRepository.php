@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Model;
+namespace EPuzzle\CustomerPrice\Model;
 
-use ePuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface;
-use ePuzzle\CustomerPrice\Api\Data;
+use EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface;
+use EPuzzle\CustomerPrice\Api\Data;
 use Magento\Framework\Api\SearchCriteriaInterface;
 
 /**
@@ -20,10 +13,29 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 class CustomerPriceRepository implements CustomerPriceRepositoryInterface
 {
+    /**
+     * @var CustomerPrice\GetById
+     */
     private CustomerPrice\GetById $getById;
+
+    /**
+     * @var CustomerPrice\Save
+     */
     private CustomerPrice\Save $save;
+
+    /**
+     * @var CustomerPrice\DeleteById
+     */
     private CustomerPrice\DeleteById $deleteById;
+
+    /**
+     * @var CustomerPrice\Delete
+     */
     private CustomerPrice\Delete $delete;
+
+    /**
+     * @var CustomerPrice\GetList
+     */
     private CustomerPrice\GetList $getList;
 
     /**

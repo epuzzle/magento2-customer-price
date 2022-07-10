@@ -1,17 +1,10 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Test\Unit\Model\Customer;
+namespace EPuzzle\CustomerPrice\Test\Unit\Model\Customer;
 
-use ePuzzle\CustomerPrice\Model\Customer\ExistingCustomerPriceByStrategy;
+use EPuzzle\CustomerPrice\Model\Customer\ExistingCustomerPriceByStrategy;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Select;
@@ -29,6 +22,10 @@ class ExistingCustomerPriceByStrategyTest extends TestCase
      * @var AdapterInterface|MockObject
      */
     private AdapterInterface $connection;
+
+    /**
+     * @var ExistingCustomerPriceByStrategy
+     */
     private ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy;
 
     /**

@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace EPuzzle\CustomerPrice\Model\Customer;
+namespace EPuzzle\CustomerPrice\Model\Customer\Adminhtml;
 
 use EPuzzle\CustomerPrice\Model\Config\Source\Website;
+use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
 use Exception;
+use Magento\Backend\Model\Session\QuoteFactory;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
-use Magento\Customer\Model\SessionFactory;
 
 /**
- * Getting information about the customer from the session on the frontend area and other areas
+ * Getting information about the customer from the session on the adminhtml area
  */
 class CustomerProvider implements CustomerProviderInterface
 {
@@ -21,19 +22,19 @@ class CustomerProvider implements CustomerProviderInterface
     private CustomerRepositoryInterface $customerRepository;
 
     /**
-     * @var SessionFactory
+     * @var QuoteFactory
      */
-    private SessionFactory $sessionFactory;
+    private QuoteFactory $sessionFactory;
 
     /**
      * CustomerProvider
      *
      * @param CustomerRepositoryInterface $customerRepository
-     * @param SessionFactory $sessionFactory
+     * @param QuoteFactory $sessionFactory
      */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
-        SessionFactory $sessionFactory
+        QuoteFactory $sessionFactory
     ) {
         $this->customerRepository = $customerRepository;
         $this->sessionFactory = $sessionFactory;

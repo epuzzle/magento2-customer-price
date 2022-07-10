@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Plugin\Model\Adapter\FieldMapper\FieldMapperResolver;
+namespace EPuzzle\CustomerPrice\Plugin\Model\Adapter\FieldMapper\FieldMapperResolver;
 
-use ePuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
-use ePuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
+use EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
+use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
 use Magento\Elasticsearch\Model\Adapter\FieldMapperInterface;
 
 /**
@@ -22,7 +15,14 @@ use Magento\Elasticsearch\Model\Adapter\FieldMapperInterface;
  */
 class UpdatePriceFieldToCustomerPriceField
 {
+    /**
+     * @var CustomerProviderInterface
+     */
     private CustomerProviderInterface $customerProvider;
+
+    /**
+     * @var CustomerPriceFieldNameResolver
+     */
     private CustomerPriceFieldNameResolver $customerPriceFieldNameResolver;
 
     /**

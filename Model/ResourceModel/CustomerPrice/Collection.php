@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
+namespace EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
 
-use ePuzzle\CustomerPrice\Model\CustomerPrice;
-use ePuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice as CustomerPriceResource;
+use EPuzzle\CustomerPrice\Model\CustomerPrice;
+use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice as CustomerPriceResource;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
@@ -23,8 +16,19 @@ use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
  */
 class Collection extends AbstractCollection
 {
+    /**
+     * @var string
+     */
     protected $_idFieldName = CustomerPriceResource::PK;
-    protected $_eventPrefix = 'ep_customer_price_collection';
+
+    /**
+     * @var string
+     */
+    protected $_eventPrefix = 'epuzzle_customer_price_collection';
+
+    /**
+     * @var string
+     */
     protected $_eventObject = 'customer_price_collection';
 
     /**

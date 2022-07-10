@@ -1,19 +1,12 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Test\Unit\Model\Adapter\FieldMapper\Product\Product\FieldName;
+namespace EPuzzle\CustomerPrice\Test\Unit\Model\Adapter\FieldMapper\Product\Product\FieldName;
 
-use ePuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
-use ePuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
-use ePuzzle\CustomerPrice\Model\CustomerPriceSearchResults;
+use EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
+use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
+use EPuzzle\CustomerPrice\Model\CustomerPriceSearchResults;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,6 +16,9 @@ use PHPUnit\Framework\TestCase;
  */
 class CustomerPriceFieldNameResolverTest extends TestCase
 {
+    /**
+     * @var CustomerPriceFieldNameResolver
+     */
     private CustomerPriceFieldNameResolver $customerPriceFieldNameResolver;
 
     /**

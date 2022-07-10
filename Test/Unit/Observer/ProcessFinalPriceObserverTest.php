@@ -1,19 +1,12 @@
 <?php
 
-/**
- * Customer Prices for Magento 2
- *
- * Copyright © Dmitry Kaplin - All rights reserved.
- * See LICENSE.txt bundled with this module for license details.
- */
-
 declare(strict_types=1);
 
-namespace Jeysmook\CustomerPrices\Test\Unit\Observer;
+namespace EPuzzle\CustomerPrice\Test\Unit\Observer;
 
-use Jeysmook\CustomerPrices\Api\CustomerProviderInterface;
-use Jeysmook\CustomerPrices\Model\Command\CustomerPrice\PriceResolver;
-use Jeysmook\CustomerPrices\Observer\ProcessFinalPriceObserver;
+use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
+use EPuzzle\CustomerPrice\Model\CustomerPrice\PriceResolver;
+use EPuzzle\CustomerPrice\Observer\ProcessFinalPriceObserver;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Event;
 use Magento\Framework\Event\Observer;
@@ -30,17 +23,17 @@ class ProcessFinalPriceObserverTest extends TestCase
     /**
      * @var CustomerProviderInterface|MockObject
      */
-    private $customerProvider;
+    private CustomerProviderInterface $customerProvider;
 
     /**
      * @var PriceResolver|MockObject
      */
-    private $customerPriceResolver;
+    private PriceResolver $customerPriceResolver;
 
     /**
      * @var ProcessFinalPriceObserver
      */
-    private $processFinalPriceObserver;
+    private ProcessFinalPriceObserver $processFinalPriceObserver;
 
     /**
      * @inheritDoc

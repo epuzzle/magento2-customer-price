@@ -1,19 +1,13 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Test\Unit\Model\CustomerPrice;
+namespace EPuzzle\CustomerPrice\Test\Unit\Model\CustomerPrice;
 
-use ePuzzle\CustomerPrice\Model\CustomerPrice;
+use EPuzzle\CustomerPrice\Model\CustomerPrice;
 use Exception;
 use Magento\Framework\Exception\CouldNotDeleteException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,8 +15,19 @@ use PHPUnit\Framework\TestCase;
  */
 class DeleteByIdTest extends TestCase
 {
+    /**
+     * @var CustomerPrice|MockObject
+     */
     private CustomerPrice $entity;
+
+    /**
+     * @var CustomerPrice\GetById|MockObject
+     */
     private CustomerPrice\GetById $getById;
+
+    /**
+     * @var CustomerPrice\DeleteById
+     */
     private CustomerPrice\DeleteById $deleteById;
 
     /**

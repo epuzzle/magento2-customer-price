@@ -1,17 +1,10 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Test\Unit\Model;
+namespace EPuzzle\CustomerPrice\Test\Unit\Model;
 
-use ePuzzle\CustomerPrice\Model\CustomerPrice;
+use EPuzzle\CustomerPrice\Model\CustomerPrice;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
@@ -22,6 +15,9 @@ use PHPUnit\Framework\TestCase;
  */
 class CustomerPriceTest extends TestCase
 {
+    /**
+     * @var CustomerPrice
+     */
     private CustomerPrice $customerPrice;
 
     /**

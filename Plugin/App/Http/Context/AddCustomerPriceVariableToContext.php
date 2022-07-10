@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Plugin\App\Http\Context;
+namespace EPuzzle\CustomerPrice\Plugin\App\Http\Context;
 
-use ePuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
-use ePuzzle\CustomerPrice\Model\Customer\ExistingCustomerPriceByStrategy;
+use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
+use EPuzzle\CustomerPrice\Model\Customer\ExistingCustomerPriceByStrategy;
 use Magento\Framework\App\Http\Context;
 
 /**
@@ -24,7 +17,14 @@ class AddCustomerPriceVariableToContext
 {
     private const KEY = 'EP_CUSTOMER_ID';
 
+    /**
+     * @var CustomerProviderInterface
+     */
     private CustomerProviderInterface $customerProvider;
+
+    /**
+     * @var ExistingCustomerPriceByStrategy
+     */
     private ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy;
 
     /**

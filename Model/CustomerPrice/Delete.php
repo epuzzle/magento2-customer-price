@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Model\CustomerPrice;
+namespace EPuzzle\CustomerPrice\Model\CustomerPrice;
 
-use ePuzzle\CustomerPrice\Api\Data\CustomerPriceInterface;
-use ePuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
+use EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterface;
+use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
 use Exception;
 use Magento\Framework\Exception\CouldNotDeleteException;
 
@@ -21,6 +14,9 @@ use Magento\Framework\Exception\CouldNotDeleteException;
  */
 class Delete
 {
+    /**
+     * @var CustomerPrice
+     */
     private CustomerPrice $resource;
 
     /**

@@ -1,15 +1,8 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Model\Customer;
+namespace EPuzzle\CustomerPrice\Model\Customer;
 
 use Magento\Framework\App\ResourceConnection;
 
@@ -21,7 +14,14 @@ class ExistingCustomerPriceByStrategy
     public const STRATEGY_CUSTOMER = 'customer_id';
     public const STRATEGY_PRODUCT = 'product_id';
 
+    /**
+     * @var ResourceConnection
+     */
     private ResourceConnection $resourceConnection;
+
+    /**
+     * @var boolean[]
+     */
     private array $cache = [];
 
     /**
@@ -54,7 +54,7 @@ class ExistingCustomerPriceByStrategy
         }
 
         $select = $this->resourceConnection->getConnection()->select();
-        $select->from($this->resourceConnection->getTableName('ep_customer_price'), 'COUNT(*)');
+        $select->from($this->resourceConnection->getTableName('epuzzle_customer_price'), 'COUNT(*)');
         $select->where($strategy . ' = ?', $value);
         $size = $this->resourceConnection->getConnection()->fetchOne($select);
         return $this->cache[$cacheKey] = $size > 0;

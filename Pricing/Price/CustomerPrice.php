@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
- */
-
 declare(strict_types=1);
 
-namespace ePuzzle\CustomerPrice\Pricing\Price;
+namespace EPuzzle\CustomerPrice\Pricing\Price;
 
-use ePuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
-use ePuzzle\CustomerPrice\Model\CustomerPrice\PriceResolver;
+use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
+use EPuzzle\CustomerPrice\Model\CustomerPrice\PriceResolver;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Pricing\Adjustment\CalculatorInterface;
 use Magento\Framework\Pricing\Price\AbstractPrice;
@@ -27,9 +20,16 @@ use Magento\Framework\Pricing\SaleableInterface;
  */
 class CustomerPrice extends AbstractPrice implements BasePriceProviderInterface
 {
-    public const PRICE_CODE = 'ep_customer_price';
+    public const PRICE_CODE = 'epCustomerPrice';
 
+    /**
+     * @var CustomerProviderInterface
+     */
     private CustomerProviderInterface $customerProvider;
+
+    /**
+     * @var PriceResolver
+     */
     private PriceResolver $customerPriceResolver;
 
     /**
