@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Customer prices for Magento 2 platform
+ *
+ * @author Dmytro Kaplin <dkaplin1994@gmail.com>
+ * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="ePuzzle\CustomerPrice\Api\Data\CustomerPriceInterface"
+                type="ePuzzle\CustomerPrice\Model\CustomerPrice"/>
+    <preference for="ePuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface"
+                type="ePuzzle\CustomerPrice\Model\CustomerPriceRepository"/>
+    <preference for="ePuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface"
+                type="ePuzzle\CustomerPrice\Model\Customer\CustomerProvider"/>
+
+    <virtualType name="Magento\Catalog\Pricing\Price\Pool">
+        <arguments>
+            <argument name="prices" xsi:type="array">
+                <item name="epCustomerPrice" xsi:type="string">ePuzzle\CustomerPrice\Pricing\Price\CustomerPrice</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="additionalFieldsProviderForElasticsearch">
+        <arguments>
+            <argument name="fieldsProviders" xsi:type="array">
+                <item name="epCustomerPriceFields" xsi:type="object">ePuzzle\CustomerPrice\Model\Adapter\BatchDataMapper\CustomerPriceFieldsProvider</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Elasticsearch\Model\Adapter\FieldMapper\Product\CompositeFieldProvider">
+        <arguments>
+            <argument name="providers" xsi:type="array">
+                <item name="epCustomerPrice" xsi:type="object">ePuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\CustomerPriceField</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Elasticsearch\Model\Adapter\FieldMapperInterface">
+        <plugin name="epUpdatePriceFieldToCustomerPrice"
+                type="ePuzzle\CustomerPrice\Plugin\Model\Adapter\FieldMapper\FieldMapperResolver\UpdatePriceFieldToCustomerPriceField"
+                sortOrder="10"/>
+    </type>
+
+    <!-- Indexer and Cache -->
+    <type name="ePuzzle\CustomerPrice\Model\Command\FlushCacheByTags">
+        <arguments>
+            <argument name="cacheList" xsi:type="array">
+                <item name="block_html" xsi:type="const">Magento\Framework\App\Cache\Type\Block::TYPE_IDENTIFIER</item>
+                <item name="collections" xsi:type="const">Magento\Framework\App\Cache\Type\Collection::TYPE_IDENTIFIER</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="ePuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice">
+        <plugin name="epReindexAfterSaveCustomerPrice"
+                type="ePuzzle\CustomerPrice\Plugin\Model\ResourceModel\CustomerPrice\CustomerPrice\ReindexAndFlushCache"
+                sortOrder="10"/>
+    </type>
+
+    <type name="Magento\Framework\Pricing\Render\PriceBox">
+        <plugin name="epAddCacheTagsForPriceBox"
+                type="ePuzzle\CustomerPrice\Plugin\Framework\Pricing\Render\PriceBox\AddCacheTagsToPriceBox"
+                sortOrder="10"/>
+    </type>
+
+    <type name="Magento\CatalogSearch\Model\Indexer\Mview\Action">
+        <plugin name="epFlushCacheAfterReindex"
+                type="ePuzzle\CustomerPrice\Plugin\Model\Indexer\Mview\Action\FlushCacheAfterReindex"
+                sortOrder="10"/>
+    </type>
+    <!-- Indexer and Cache -->
+</config>

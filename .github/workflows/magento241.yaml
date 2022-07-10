@@ -1,0 +1,35 @@
+name: magento241
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Updating all repositories
+        run: sudo apt update
+      - name: Installation php7.4
+        run: sudo add-apt-repository -y ppa:ondrej/php && sudo apt update && sudo apt -y install php7.4 && sudo update-alternatives --set php /usr/bin/php7.4
+      - name: Installation php extensions for Magento 2.4.1
+        run: sudo apt -y install php7.4-common && sudo apt -y install php7.4-bcmath && sudo apt -y install php7.4-ctype && sudo apt -y install php7.4-curl && sudo apt -y install php7.4-xml && sudo apt -y install php7.4-mbstring && sudo apt -y install php7.4-gd && sudo apt -y install php7.4-intl && sudo apt -y install php7.4-iconv && sudo apt -y install php7.4-mysql && sudo apt -y install php7.4-simplexml && sudo apt -y install php7.4-soap && sudo apt -y install php7.4-xsl && sudo apt -y install php7.4-zip && sudo apt -y install php7.4-sockets
+      - name: Installation MySQL
+        run: sudo apt -y install mysql-server
+      - name: Installation Composer
+        run: sudo apt -y install php7.4-cli unzip && curl -sS https://getcomposer.org/composer-1.phar -o /tmp/composer.phar
+      - name: Installation Magento Coding Standard
+        run: php /tmp/composer.phar create-project magento/magento-coding-standard --stability=dev /tmp/magento-coding-standard
+      - name: Run Magento Coding Standard
+        run: /tmp/magento-coding-standard/vendor/bin/phpcs --standard=Magento2 ./
+      - name: Installation Magento 2.4.1
+        run: php /tmp/composer.phar config http-basic.repo.magento.com ${MAGENTO2_USERNAME} ${MAGENTO2_PASSWORD} && php /tmp/composer.phar create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.1 /tmp/magento2
+        env:
+          MAGENTO2_USERNAME: ${{ secrets.MAGENTO2_USERNAME }}
+          MAGENTO2_PASSWORD: ${{ secrets.MAGENTO2_PASSWORD }}
+      - name: Copy Jeysmook_CustomerPrices module
+        run: mkdir -p /tmp/magento2/app/code/Jeysmook/CustomerPrices && cp -r ./ /tmp/magento2/app/code/Jeysmook/CustomerPrices
+      - name: Run Unit Tests
+        run: php /tmp/magento2/vendor/phpunit/phpunit/phpunit --no-configuration /tmp/magento2/app/code/Jeysmook/CustomerPrices

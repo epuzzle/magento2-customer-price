@@ -1,0 +1,58 @@
+Back,Back
+Delete,Delete
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Reset,Reset
+Save,Save
+"Save & Close","Save & Close"
+"You deleted the customer price.","You deleted the customer price."
+"We can't find a customer price to delete.","We can't find a customer price to delete."
+"Please note that the customer price based on scope.","Please note that the customer price based on scope."
+"This customer price no longer exists.","This customer price no longer exists."
+Edit,Edit
+New,New
+Catalog,Catalog
+Inventory,Inventory
+"Customer Prices","Customer Prices"
+"You saved the customer price.","You saved the customer price."
+"Something went wrong while saving the customer price.","Something went wrong while saving the customer price."
+"Could not delete the customer price: %error","Could not delete the customer price: %error"
+"Could not save the customer price: %error","Could not save the customer price: %error"
+"The store not found.","The store not found."
+Email,Email
+Name,Name
+Customer,Customer
+"The customer is required.","The customer is required."
+"Assign customer","Assign customer"
+Cancel,Cancel
+SKU,SKU
+Price,Price
+Product,Product
+"The product is required.","The product is required."
+"Assign product","Assign product"
+Assign,Assign
+"Delete %1","Delete %1"
+"Are you sure you want to delete a %1 record?","Are you sure you want to delete a %1 record?"
+"Go to Product","Go to Product"
+"Go to Customer","Go to Customer"
+Unassign,Unassign
+"General Information","General Information"
+Quantity,Quantity
+Add,Add
+ID,ID
+"Product ID","Product ID"
+"Customer ID","Customer ID"
+"Product SKU","Product SKU"
+"Customer Email","Customer Email"
+Website,Website
+Created,Created
+Modified,Modified
+Phone,Phone
+"Customer Since","Customer Since"
+"Date of Birth","Date of Birth"
+Gender,Gender
+Thumbnail,Thumbnail
+"Attribute Set","Attribute Set"
+AttributeSetText,AttributeSetText
+Status,Status
+StatusText,StatusText
+Type,Type

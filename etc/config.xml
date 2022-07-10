@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Customer prices for Magento 2 platform
+ *
+ * @author Dmytro Kaplin <dkaplin1994@gmail.com>
+ * @license https://github.com/epuzzle/magento2-customer-price/blob/main/LICENSE
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ep_customer_price>
+            <general>
+                <enabled>0</enabled>
+            </general>
+        </ep_customer_price>
+    </default>
+</config>
