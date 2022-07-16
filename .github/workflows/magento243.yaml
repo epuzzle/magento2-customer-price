@@ -19,13 +19,13 @@ jobs:
       - name: Installation MySQL
         run: sudo apt -y install mysql-server
       - name: Installation Composer
-        run: sudo apt -y install php7.4-cli unzip && curl -sS https://getcomposer.org/composer-1.phar -o /tmp/composer.phar
+        run: sudo apt -y install php7.4-cli unzip && curl -sS https://getcomposer.org/composer-2.phar -o /tmp/composer.phar
       - name: Installation Magento Coding Standard
         run: php /tmp/composer.phar create-project magento/magento-coding-standard --stability=dev /tmp/magento-coding-standard
       - name: Run Magento Coding Standard
         run: /tmp/magento-coding-standard/vendor/bin/phpcs --standard=Magento2 ./
       - name: Installation Magento 2.4.3
-        run: php /tmp/composer.phar config http-basic.repo.magento.com ${MAGENTO2_USERNAME} ${MAGENTO2_PASSWORD} && php /tmp/composer.phar create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.3 /tmp/magento2
+        run: php /tmp/composer.phar config --global http-basic.repo.magento.com ${MAGENTO2_USERNAME} ${MAGENTO2_PASSWORD} && php /tmp/composer.phar config --global allow-plugins true && php /tmp/composer.phar create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.3 /tmp/magento2
         env:
           MAGENTO2_USERNAME: ${{ secrets.MAGENTO2_USERNAME }}
           MAGENTO2_PASSWORD: ${{ secrets.MAGENTO2_PASSWORD }}
