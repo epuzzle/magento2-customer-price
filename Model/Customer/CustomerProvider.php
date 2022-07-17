@@ -70,6 +70,11 @@ class CustomerProvider implements CustomerProviderInterface
      */
     public function getWebsiteId(): int
     {
-        return $this->getCustomer() ? (int)$this->getCustomer()->getWebsiteId() : Website::DEFAULT_WEBSITE_ID;
+        $customer = $this->getCustomer();
+        if ($customer) {
+            return (int)$customer->getWebsiteId();
+        }
+
+        return Website::DEFAULT_WEBSITE_ID;
     }
 }

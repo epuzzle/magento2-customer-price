@@ -67,7 +67,7 @@ class Website implements OptionSourceInterface
         }
 
         /** @var WebsiteInterface $website */
-        foreach ($this->collectionFactory->create() as $website) {
+        foreach ($this->collectionFactory->create()->getItems() as $website) {
             $this->options[$website->getId()] = $website->getName();
         }
 
