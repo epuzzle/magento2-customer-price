@@ -1,0 +1,51 @@
+name: magento244
+
+on:
+  push:
+    branches: [ 2.4-develop ]
+  pull_request:
+    branches: [ 2.4-develop ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0.21
+        env:
+          MYSQL_ROOT_PASSWORD: 1
+          MYSQL_DATABASE: m244
+        ports:
+          - 3306:3306
+    steps:
+      - uses: actions/checkout@v2
+      - uses: getong/elasticsearch-action@v1.2
+        with:
+          elasticsearch version: '7.10.1'
+          host port: 9200
+          container port: 9200
+          host node port: 9300
+          node port: 9300
+          discovery type: 'single-node'
+      - name: Updating all repositories
+        run: sudo apt update
+      - name: Installation php7.4
+        run: sudo add-apt-repository -y ppa:ondrej/php && sudo apt update && sudo apt -y install php7.4 && sudo update-alternatives --set php /usr/bin/php7.4
+      - name: Installation php extensions for Magento 2.4.4
+        run: sudo apt -y install php7.4-common && sudo apt -y install php7.4-bcmath && sudo apt -y install php7.4-ctype && sudo apt -y install php7.4-curl && sudo apt -y install php7.4-xml && sudo apt -y install php7.4-mbstring && sudo apt -y install php7.4-gd && sudo apt -y install php7.4-intl && sudo apt -y install php7.4-iconv && sudo apt -y install php7.4-mysql && sudo apt -y install php7.4-simplexml && sudo apt -y install php7.4-soap && sudo apt -y install php7.4-xsl && sudo apt -y install php7.4-zip && sudo apt -y install php7.4-sockets
+      - name: Installation Composer
+        run: sudo apt -y install php7.4-cli unzip && curl -sS https://getcomposer.org/composer-2.phar -o /tmp/composer.phar
+      - name: Installation Magento Coding Standard
+        run: php /tmp/composer.phar create-project magento/magento-coding-standard --stability=dev /tmp/magento-coding-standard
+      - name: Run Magento Coding Standard
+        run: /tmp/magento-coding-standard/vendor/bin/phpcs --standard=Magento2 ./
+      - name: Installation Magento 2.4.4
+        run: php /tmp/composer.phar config --global http-basic.repo.magento.com ${MAGENTO2_USERNAME} ${MAGENTO2_PASSWORD} && php /tmp/composer.phar config --global allow-plugins true && php /tmp/composer.phar create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.4 /tmp/magento2 && php /tmp/magento2/bin/magento setup:install --base-url=http://localhost/m244 --db-host="127.0.0.1:3306" --db-name=m244 --db-user=root --db-password=1 --admin-firstname=admin --admin-lastname=admin --admin-email=admin@admin.com --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200 --elasticsearch-index-prefix=m244 --elasticsearch-timeout=15
+        env:
+          MAGENTO2_USERNAME: ${{ secrets.MAGENTO2_USERNAME }}
+          MAGENTO2_PASSWORD: ${{ secrets.MAGENTO2_PASSWORD }}
+      - name: Copy EPuzzle_CustomerPrice module
+        run: mkdir -p /tmp/magento2/app/code/EPuzzle/CustomerPrice && cp -r ./ /tmp/magento2/app/code/EPuzzle/CustomerPrice
+      - name: Configure Production Mode
+        run: php /tmp/magento2/bin/magento setup:upgrade && php /tmp/magento2/bin/magento deploy:mode:set production
+      - name: Run Unit Tests
+        run: php /tmp/magento2/vendor/phpunit/phpunit/phpunit --no-configuration /tmp/magento2/app/code/EPuzzle/CustomerPrice
