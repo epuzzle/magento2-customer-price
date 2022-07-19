@@ -3,10 +3,18 @@ Welcome to the Customer Prices installation! This module provides prices for cus
 
 # Builds Status
 [![Magento 2.4.3 Actions Status](https://github.com/epuzzle/magento2-customer-price/workflows/magento243/badge.svg)](https://github.com/epuzzle/magento2-customer-price/actions)
+[![Magento 2.4.4 Actions Status](https://github.com/epuzzle/magento2-customer-price/workflows/magento244/badge.svg)](https://github.com/epuzzle/magento2-customer-price/actions)
 
 # Requirements
 1. [Installed Magento 2 System](https://devdocs.magento.com/guides/v2.4/install-gde/bk-install-guide.html)
 2. [Magento System Requirements](https://devdocs.magento.com/guides/v2.4/install-gde/system-requirements.html)
+
+# Supported Magento 2 versions
+| **Version** | **Status** | **Note**                                                         |
+|-------------|------------|------------------------------------------------------------------|
+| **2.3.***   | ?          | Deprecated module [here](https://github.com/jeysmook/magento2-customer-prices) |
+| **2.4.3**   | &check;    |                                                                  |
+| **2.4.4**   | &check;    |                                                                  |
 
 # Documentation
 * [wiki](https://github.com/epuzzle/magento2-customer-price/wiki)
