@@ -6,6 +6,7 @@ namespace EPuzzle\CustomerPrice\Plugin\Model\ResourceModel\CustomerPrice\Custome
 
 use EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterface;
 use EPuzzle\CustomerPrice\Model\Command\FlushCacheByTags;
+use EPuzzle\CustomerPrice\Model\Product\GetParentIds;
 use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\CatalogSearch\Model\Indexer\Fulltext;
@@ -40,23 +41,31 @@ class ReindexAndFlushCache
     private ProductInterfaceFactory $productFactory;
 
     /**
+     * @var GetParentIds
+     */
+    private GetParentIds $getParentIds;
+
+    /**
      * ReindexAndFlushCache
      *
      * @param IndexerRegistry $indexerRegistry
      * @param TypeListInterface $cacheTypeList
      * @param FlushCacheByTags $flushCacheByTags
      * @param ProductInterfaceFactory $productFactory
+     * @param GetParentIds $getParentIds
      */
     public function __construct(
         IndexerRegistry $indexerRegistry,
         TypeListInterface $cacheTypeList,
         FlushCacheByTags $flushCacheByTags,
-        ProductInterfaceFactory $productFactory
+        ProductInterfaceFactory $productFactory,
+        GetParentIds $getParentIds
     ) {
         $this->indexerRegistry = $indexerRegistry;
         $this->cacheTypeList = $cacheTypeList;
         $this->flushCacheByTags = $flushCacheByTags;
         $this->productFactory = $productFactory;
+        $this->getParentIds = $getParentIds;
     }
 
     /**
@@ -95,6 +104,14 @@ class ReindexAndFlushCache
             $this->productFactory->create()
                 ->setId($entity->getProductId())
         );
+
+        foreach ($this->getParentIds->execute((int)$entity->getProductId()) as $productId) {
+            $this->flushCacheForEntity(
+                $this->productFactory->create()
+                    ->setId($productId)
+            );
+        }
+
         return $result;
     }
 
@@ -147,7 +164,7 @@ class ReindexAndFlushCache
     {
         $indexer = $this->indexerRegistry->get(Fulltext::INDEXER_ID);
         if (!$indexer->isScheduled()) {
-            $indexer->reindexRow($productId);
+            $indexer->reindexList([$productId, ...$this->getParentIds->execute($productId)]);
         }
     }
 
