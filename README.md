@@ -10,11 +10,13 @@ Welcome to the Customer Prices installation! This module provides prices for cus
 2. [Magento System Requirements](https://devdocs.magento.com/guides/v2.4/install-gde/system-requirements.html)
 
 # Supported Magento 2 versions
-| **Version** | **Status** | **Note**                                                         |
-|-------------|------------|------------------------------------------------------------------|
-| **2.3.***   | ?          | Deprecated module [here](https://github.com/jeysmook/magento2-customer-prices) |
-| **2.4.3**   | &check;    |                                                                  |
-| **2.4.4**   | &check;    |                                                                  |
+| **Version**                                    | **Status** | **Notes**                                                                      |
+|------------------------------------------------|------------|--------------------------------------------------------------------------------|
+| **Magento Open Source/Magento Commerce 2.3.*** | ?          | Deprecated module [here](https://github.com/jeysmook/magento2-customer-prices) |
+| **Magento Open Source 2.4.3**                  | &check;    |                                                                                |
+| **Magento Commerce 2.4.3**                     | &check;    |                                                                                |
+| **Magento Open Source 2.4.4**                  | &check;    |                                                                                |
+| **Magento Commerce 2.4.4**                     | &check;    |                                                                                |
 
 # Documentation
 * [wiki](https://github.com/epuzzle/magento2-customer-price/wiki)
