@@ -58,7 +58,7 @@ class PriceResolver
         $select->where('customer_id = ?', $customerId);
         $select->where('qty <= ?', max($qty, 1));
         $select->where('qty != ?', 0);
-        $select->where('website_id = ?', $websiteId);
+//        $select->where('website_id = ?', $websiteId);
         $select->order('qty DESC');
         $select->limit(1);
         $price = (string)$this->resource->getConnection()->fetchOne($select);

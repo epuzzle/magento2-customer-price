@@ -3,7 +3,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="EPuzzle_CustomerPrice">
         <sequence>
-            <module name="Magento_Catalog"/>
+            <module name="Magento_Customer"/>
         </sequence>
     </module>
 </config>
