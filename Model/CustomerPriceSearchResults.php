@@ -16,6 +16,7 @@ class CustomerPriceSearchResults extends SearchResults implements CustomerPriceS
     /**
      * @inheritDoc
      */
+    // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
     public function getItems()
     {
         return parent::getItems();
@@ -24,6 +25,7 @@ class CustomerPriceSearchResults extends SearchResults implements CustomerPriceS
     /**
      * @inheritDoc
      */
+    // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
     public function setItems(array $items)
     {
         return parent::setItems($items);
