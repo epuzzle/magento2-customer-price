@@ -21,11 +21,6 @@ class Website implements OptionSourceInterface
     public const DEFAULT_WEBSITE_ID = 1;
 
     /**
-     * @var CollectionFactory
-     */
-    private CollectionFactory $collectionFactory;
-
-    /**
      * @var string[]
      */
     private array $options = [];
@@ -36,9 +31,8 @@ class Website implements OptionSourceInterface
      * @param CollectionFactory $collectionFactory
      */
     public function __construct(
-        CollectionFactory $collectionFactory
+        private readonly CollectionFactory $collectionFactory
     ) {
-        $this->collectionFactory = $collectionFactory;
     }
 
     /**

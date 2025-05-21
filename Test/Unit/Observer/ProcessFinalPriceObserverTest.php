@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EPuzzle\CustomerPrice\Test\Unit\Observer;
 
-use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
-use EPuzzle\CustomerPrice\Model\CustomerPrice\PriceResolver;
 use EPuzzle\CustomerPrice\Observer\ProcessFinalPriceObserver;
+use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice;
+use EPuzzle\CustomerPrice\Pricing\Price\CustomerPriceFactory;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Event;
 use Magento\Framework\Event\Observer;
@@ -21,14 +21,14 @@ use PHPUnit\Framework\TestCase;
 class ProcessFinalPriceObserverTest extends TestCase
 {
     /**
-     * @var CustomerProviderInterface|MockObject
+     * @var CustomerPrice|MockObject
      */
-    private CustomerProviderInterface $customerProvider;
+    private CustomerPrice $customerPrice;
 
     /**
-     * @var PriceResolver|MockObject
+     * @var CustomerPriceFactory|MockObject
      */
-    private PriceResolver $customerPriceResolver;
+    private CustomerPriceFactory $customerPriceFactory;
 
     /**
      * @var ProcessFinalPriceObserver
@@ -40,12 +40,12 @@ class ProcessFinalPriceObserverTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->customerProvider = $this->createMock(CustomerProviderInterface::class);
-        $this->customerPriceResolver = $this->createMock(PriceResolver::class);
-        $this->processFinalPriceObserver = new ProcessFinalPriceObserver(
-            $this->customerProvider,
-            $this->customerPriceResolver
-        );
+        $this->customerPrice = $this->createMock(CustomerPrice::class);
+        $this->customerPriceFactory = $this->createMock(CustomerPriceFactory::class);
+        $this->customerPriceFactory->expects($this->any())
+            ->method('create')
+            ->willReturn($this->customerPrice);
+        $this->processFinalPriceObserver = new ProcessFinalPriceObserver($this->customerPriceFactory);
     }
 
     /**
@@ -66,11 +66,8 @@ class ProcessFinalPriceObserverTest extends TestCase
     ): void {
         $product = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['setFinalPrice', 'getId'])
+            ->onlyMethods(['setFinalPrice'])
             ->getMock();
-        $product->expects($this->once())
-            ->method('getId')
-            ->willReturn($productId);
         $product->expects($this->once())
             ->method('setFinalPrice')
             ->with($expectedValue)
@@ -89,15 +86,8 @@ class ProcessFinalPriceObserverTest extends TestCase
         $observer->expects($this->any())
             ->method('getEvent')
             ->willReturn($event);
-        $this->customerProvider->expects($this->once())
-            ->method('getCustomerId')
-            ->willReturn($customerId);
-        $this->customerProvider->expects($this->once())
-            ->method('getWebsiteId')
-            ->willReturn($websiteId);
-        $this->customerPriceResolver->expects($this->once())
-            ->method('resolve')
-            ->with($customerId, $websiteId, $productId, $qty)
+        $this->customerPrice->expects($this->once())
+            ->method('getValue')
             ->willReturn($expectedValue);
         $this->processFinalPriceObserver->execute($observer);
     }

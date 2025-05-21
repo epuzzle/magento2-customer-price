@@ -16,27 +16,15 @@ use Magento\Customer\Model\SessionFactory;
 class CustomerProvider implements CustomerProviderInterface
 {
     /**
-     * @var CustomerRepositoryInterface
-     */
-    private CustomerRepositoryInterface $customerRepository;
-
-    /**
-     * @var SessionFactory
-     */
-    private SessionFactory $sessionFactory;
-
-    /**
      * CustomerProvider
      *
      * @param CustomerRepositoryInterface $customerRepository
      * @param SessionFactory $sessionFactory
      */
     public function __construct(
-        CustomerRepositoryInterface $customerRepository,
-        SessionFactory $sessionFactory
+        private CustomerRepositoryInterface $customerRepository,
+        private SessionFactory $sessionFactory
     ) {
-        $this->customerRepository = $customerRepository;
-        $this->sessionFactory = $sessionFactory;
     }
 
     /**
@@ -45,6 +33,7 @@ class CustomerProvider implements CustomerProviderInterface
     public function getCustomerId(): ?int
     {
         $customerId = $this->sessionFactory->create()->getCustomerId();
+
         return '' !== (string)$customerId ? (int)$customerId : null;
     }
 

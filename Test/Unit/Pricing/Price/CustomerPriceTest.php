@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace EPuzzle\CustomerPrice\Test\Unit\Pricing\Price;
 
-use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
-use EPuzzle\CustomerPrice\Model\CustomerPrice\PriceResolver;
 use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice;
+use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollector;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Pricing\Adjustment\CalculatorInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
-use Magento\Framework\Pricing\PriceInfoInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 /**
- * @see CustomerPrice
+ * @see PriceCollector
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
@@ -32,19 +31,19 @@ class CustomerPriceTest extends TestCase
     private PriceCurrencyInterface $priceCurrency;
 
     /**
-     * @var CustomerProviderInterface|MockObject
+     * @var CustomerPrice\PriceCollectorInterface|MockObject
      */
-    private CustomerProviderInterface $customerProvider;
+    private CustomerPrice\PriceCollectorInterface $priceCollector;
 
     /**
-     * @var PriceResolver|MockObject
+     * @var CustomerPrice\PriceCollectorProvider|MockObject
      */
-    private PriceResolver $customerPriceResolver;
+    private CustomerPrice\PriceCollectorProvider $priceCollectorProvider;
 
     /**
-     * @var PriceInfoInterface|MockObject
+     * @var LoggerInterface|MockObject
      */
-    private PriceInfoInterface $priceInfo;
+    private LoggerInterface $logger;
 
     /**
      * @inheritDoc
@@ -53,9 +52,9 @@ class CustomerPriceTest extends TestCase
     {
         $this->calculator = $this->createMock(CalculatorInterface::class);
         $this->priceCurrency = $this->createMock(PriceCurrencyInterface::class);
-        $this->customerProvider = $this->createMock(CustomerProviderInterface::class);
-        $this->customerPriceResolver = $this->createMock(PriceResolver::class);
-        $this->priceInfo = $this->createMock(PriceInfoInterface::class);
+        $this->priceCollector = $this->createMock(CustomerPrice\PriceCollectorInterface::class);
+        $this->priceCollectorProvider = $this->createMock(CustomerPrice\PriceCollectorProvider::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
     }
 
     /**
@@ -65,7 +64,7 @@ class CustomerPriceTest extends TestCase
      * @param int $productId
      * @param float $qty
      * @param float $expectedValue
-     * @see CustomerPrice::getAmount()
+     * @see CustomerPrice::getValue()
      */
     public function testGetValue(
         int $customerId,
@@ -74,40 +73,23 @@ class CustomerPriceTest extends TestCase
         float $qty,
         float $expectedValue
     ): void {
-        $this->customerProvider->expects($this->once())
-            ->method('getCustomerId')
-            ->willReturn($customerId);
-        $this->customerProvider->expects($this->once())
-            ->method('getWebsiteId')
-            ->willReturn($websiteId);
-        $this->customerPriceResolver->expects($this->once())
-            ->method('resolve')
-            ->with($customerId, $websiteId, $productId, $qty)
-            ->willReturn($expectedValue);
         $product = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getId', 'getPriceInfo'])
             ->getMock();
-        $product->expects($this->once())
-            ->method('getId')
-            ->willReturn($productId);
-        $product->expects($this->once())
-            ->method('getPriceInfo')
-            ->willReturn($this->priceInfo);
-        $this->priceCurrency->expects($this->once())
-            ->method('convertAndRound')
-            ->with($expectedValue)
+        $this->priceCollectorProvider->expects($this->once())
+            ->method('get')
+            ->willReturn($this->priceCollector);
+        $this->priceCollector->expects($this->once())
+            ->method('collect')
             ->willReturn($expectedValue);
-
         $customerPrice = new CustomerPrice(
             $product,
             $qty,
             $this->calculator,
             $this->priceCurrency,
-            $this->customerProvider,
-            $this->customerPriceResolver
+            $this->priceCollectorProvider,
+            $this->logger
         );
-
         $this->assertEquals($expectedValue, $customerPrice->getValue());
     }
 

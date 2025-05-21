@@ -15,11 +15,6 @@ class ExistingCustomerPriceByStrategy
     public const STRATEGY_PRODUCT = 'product_id';
 
     /**
-     * @var ResourceConnection
-     */
-    private ResourceConnection $resourceConnection;
-
-    /**
      * @var boolean[]
      */
     private array $cache = [];
@@ -30,9 +25,8 @@ class ExistingCustomerPriceByStrategy
      * @param ResourceConnection $resourceConnection
      */
     public function __construct(
-        ResourceConnection $resourceConnection
+        private ResourceConnection $resourceConnection
     ) {
-        $this->resourceConnection = $resourceConnection;
     }
 
     /**

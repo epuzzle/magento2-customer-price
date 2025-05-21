@@ -6,6 +6,9 @@ namespace EPuzzle\CustomerPrice\Model;
 
 use EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface;
 use EPuzzle\CustomerPrice\Api\Data;
+use EPuzzle\CustomerPrice\Api\Data\CustomerPriceSearchResultsInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SearchCriteriaBuilderFactory;
 use Magento\Framework\Api\SearchCriteriaInterface;
 
 /**
@@ -14,31 +17,6 @@ use Magento\Framework\Api\SearchCriteriaInterface;
 class CustomerPriceRepository implements CustomerPriceRepositoryInterface
 {
     /**
-     * @var CustomerPrice\GetById
-     */
-    private CustomerPrice\GetById $getById;
-
-    /**
-     * @var CustomerPrice\Save
-     */
-    private CustomerPrice\Save $save;
-
-    /**
-     * @var CustomerPrice\DeleteById
-     */
-    private CustomerPrice\DeleteById $deleteById;
-
-    /**
-     * @var CustomerPrice\Delete
-     */
-    private CustomerPrice\Delete $delete;
-
-    /**
-     * @var CustomerPrice\GetList
-     */
-    private CustomerPrice\GetList $getList;
-
-    /**
      * CustomerPriceRepository
      *
      * @param CustomerPrice\GetById $getById
@@ -46,19 +24,18 @@ class CustomerPriceRepository implements CustomerPriceRepositoryInterface
      * @param CustomerPrice\DeleteById $deleteById
      * @param CustomerPrice\Delete $delete
      * @param CustomerPrice\GetList $getList
+     * @param CustomerPriceFactory $entityFactory
+     * @param SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
      */
     public function __construct(
-        CustomerPrice\GetById $getById,
-        CustomerPrice\Save $save,
-        CustomerPrice\DeleteById $deleteById,
-        CustomerPrice\Delete $delete,
-        CustomerPrice\GetList $getList
+        private CustomerPrice\GetById $getById,
+        private CustomerPrice\Save $save,
+        private CustomerPrice\DeleteById $deleteById,
+        private CustomerPrice\Delete $delete,
+        private CustomerPrice\GetList $getList,
+        private CustomerPriceFactory $entityFactory,
+        private SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
     ) {
-        $this->getById = $getById;
-        $this->save = $save;
-        $this->deleteById = $deleteById;
-        $this->delete = $delete;
-        $this->getList = $getList;
     }
 
     /**
@@ -96,8 +73,24 @@ class CustomerPriceRepository implements CustomerPriceRepositoryInterface
     /**
      * @inheritDoc
      */
-    public function getList(SearchCriteriaInterface $searchCriteria): array
+    public function getList(SearchCriteriaInterface $searchCriteria): CustomerPriceSearchResultsInterface
     {
         return $this->getList->execute($searchCriteria);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function create(): Data\CustomerPriceInterface
+    {
+        return $this->entityFactory->create();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createSearchCriteriaBuilder(array $data = []): SearchCriteriaBuilder
+    {
+        return $this->searchCriteriaBuilderFactory->create($data);
     }
 }

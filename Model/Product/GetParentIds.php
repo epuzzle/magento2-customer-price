@@ -12,11 +12,6 @@ use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
 class GetParentIds
 {
     /**
-     * @var Configurable
-     */
-    private Configurable $configurable;
-
-    /**
      * @var array
      */
     private array $cache = [];
@@ -27,9 +22,8 @@ class GetParentIds
      * @param Configurable $configurable
      */
     public function __construct(
-        Configurable $configurable
+        private readonly Configurable $configurable
     ) {
-        $this->configurable = $configurable;
     }
 
     /**
@@ -44,6 +38,9 @@ class GetParentIds
             return $this->cache[$productId];
         }
 
-        return $this->cache[$productId] = $this->configurable->getParentIdsByChild($productId);
+        return $this->cache[$productId] = array_map(
+            static fn ($id) => (int)$id,
+            $this->configurable->getParentIdsByChild($productId)
+        );
     }
 }

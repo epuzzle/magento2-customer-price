@@ -12,11 +12,6 @@ use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
 class PriceResolver
 {
     /**
-     * @var CustomerPrice
-     */
-    private CustomerPrice $resource;
-
-    /**
      * @var float|null[]
      */
     private $cache = [];
@@ -27,9 +22,8 @@ class PriceResolver
      * @param CustomerPrice $resource
      */
     public function __construct(
-        CustomerPrice $resource
+        private readonly CustomerPrice $resource
     ) {
-        $this->resource = $resource;
     }
 
     /**

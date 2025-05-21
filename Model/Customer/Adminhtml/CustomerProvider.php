@@ -17,27 +17,15 @@ use Magento\Customer\Api\Data\CustomerInterface;
 class CustomerProvider implements CustomerProviderInterface
 {
     /**
-     * @var CustomerRepositoryInterface
-     */
-    private CustomerRepositoryInterface $customerRepository;
-
-    /**
-     * @var QuoteFactory
-     */
-    private QuoteFactory $sessionFactory;
-
-    /**
      * CustomerProvider
      *
      * @param CustomerRepositoryInterface $customerRepository
      * @param QuoteFactory $sessionFactory
      */
     public function __construct(
-        CustomerRepositoryInterface $customerRepository,
-        QuoteFactory $sessionFactory
+        private CustomerRepositoryInterface $customerRepository,
+        private QuoteFactory $sessionFactory
     ) {
-        $this->customerRepository = $customerRepository;
-        $this->sessionFactory = $sessionFactory;
     }
 
     /**
@@ -45,8 +33,10 @@ class CustomerProvider implements CustomerProviderInterface
      */
     public function getCustomerId(): ?int
     {
-        $customerId = $this->sessionFactory->create()->getCustomerId();
-        return '' !== (string)$customerId ? (int)$customerId : null;
+        $customerId = (string)$this->sessionFactory->create()->getCustomerId();
+
+        /** @phpstan-ignore-next-line */
+        return '' !== $customerId ? (int)$customerId : null;
     }
 
     /**
@@ -58,7 +48,7 @@ class CustomerProvider implements CustomerProviderInterface
         if ($customerId) {
             try {
                 return $this->customerRepository->getById($customerId);
-            } catch (Exception $exception) { // phpcs:ignore Magento2.CodeAnalysis.EmptyBlock.DetectedCatch
+            } catch (Exception) { // phpcs:ignore Magento2.CodeAnalysis.EmptyBlock.DetectedCatch
                 // could not get the customer: the customer does not exist
             }
         }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EPuzzle\CustomerPrice\Test\Unit\Model\CustomerPrice;
 
-use EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterfaceFactory;
 use EPuzzle\CustomerPrice\Model\CustomerPrice;
+use EPuzzle\CustomerPrice\Model\CustomerPriceFactory;
 use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice as CustomerPriceResource;
 use Magento\Framework\Exception\NoSuchEntityException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -39,7 +39,7 @@ class GetByIdTest extends TestCase
         $this->entity = $this->getMockBuilder(CustomerPrice::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $entityFactory = $this->getMockBuilder(CustomerPriceInterfaceFactory::class)
+        $entityFactory = $this->getMockBuilder(CustomerPriceFactory::class)
             ->disableOriginalConstructor()
             ->setMethods(['create'])
             ->getMock();

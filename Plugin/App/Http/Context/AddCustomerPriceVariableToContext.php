@@ -18,27 +18,15 @@ class AddCustomerPriceVariableToContext
     private const KEY = 'EP_CUSTOMER_ID';
 
     /**
-     * @var CustomerProviderInterface
-     */
-    private CustomerProviderInterface $customerProvider;
-
-    /**
-     * @var ExistingCustomerPriceByStrategy
-     */
-    private ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy;
-
-    /**
      * AddCustomerPriceVariableToContext
      *
      * @param CustomerProviderInterface $customerProvider
      * @param ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy
      */
     public function __construct(
-        CustomerProviderInterface $customerProvider,
-        ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy
+        private readonly CustomerProviderInterface $customerProvider,
+        private readonly ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy
     ) {
-        $this->customerProvider = $customerProvider;
-        $this->existingCustomerPriceByStrategy = $existingCustomerPriceByStrategy;
     }
 
     /**

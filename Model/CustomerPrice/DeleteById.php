@@ -13,27 +13,15 @@ use Magento\Framework\Exception\CouldNotDeleteException;
 class DeleteById
 {
     /**
-     * @var GetById
-     */
-    private GetById $getById;
-
-    /**
-     * @var Delete
-     */
-    private Delete $delete;
-
-    /**
      * DeleteById
      *
      * @param GetById $getById
      * @param Delete $delete
      */
     public function __construct(
-        GetById $getById,
-        Delete $delete
+        private readonly GetById $getById,
+        private readonly Delete $delete
     ) {
-        $this->getById = $getById;
-        $this->delete = $delete;
     }
 
     /**

@@ -15,19 +15,13 @@ use Magento\Framework\Exception\CouldNotDeleteException;
 class Delete
 {
     /**
-     * @var CustomerPrice
-     */
-    private CustomerPrice $resource;
-
-    /**
      * Delete
      *
      * @param CustomerPrice $resource
      */
     public function __construct(
-        CustomerPrice $resource
+        private readonly CustomerPrice $resource
     ) {
-        $this->resource = $resource;
     }
 
     /**

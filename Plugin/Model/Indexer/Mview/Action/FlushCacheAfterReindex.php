@@ -13,19 +13,13 @@ use Magento\PageCache\Model\Cache\Type;
 class FlushCacheAfterReindex
 {
     /**
-     * @var TypeListInterface
-     */
-    private TypeListInterface $cacheTypeList;
-
-    /**
      * FlushCacheAfterReindex
      *
      * @param TypeListInterface $cacheTypeList
      */
     public function __construct(
-        TypeListInterface $cacheTypeList
+        private readonly TypeListInterface $cacheTypeList
     ) {
-        $this->cacheTypeList = $cacheTypeList;
     }
 
     /**

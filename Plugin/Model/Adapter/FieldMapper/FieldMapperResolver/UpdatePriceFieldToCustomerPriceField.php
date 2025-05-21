@@ -16,27 +16,15 @@ use Magento\Elasticsearch\Model\Adapter\FieldMapperInterface;
 class UpdatePriceFieldToCustomerPriceField
 {
     /**
-     * @var CustomerProviderInterface
-     */
-    private CustomerProviderInterface $customerProvider;
-
-    /**
-     * @var CustomerPriceFieldNameResolver
-     */
-    private CustomerPriceFieldNameResolver $customerPriceFieldNameResolver;
-
-    /**
      * UpdatePriceFieldToCustomerPriceField
      *
      * @param CustomerProviderInterface $customerProvider
      * @param CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
      */
     public function __construct(
-        CustomerProviderInterface $customerProvider,
-        CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
+        private readonly CustomerProviderInterface $customerProvider,
+        private readonly CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
     ) {
-        $this->customerProvider = $customerProvider;
-        $this->customerPriceFieldNameResolver = $customerPriceFieldNameResolver;
     }
 
     /**
@@ -62,6 +50,7 @@ class UpdatePriceFieldToCustomerPriceField
                 ]
             );
         }
+
         return $fieldName;
     }
 }

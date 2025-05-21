@@ -12,26 +12,10 @@ use Magento\Elasticsearch\Model\Adapter\FieldMapper\Product\FieldProviderInterfa
 
 /**
  * Provide customer price fields for product
- *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
 class CustomerPriceField implements FieldProviderInterface
 {
-    /**
-     * @var ConverterInterface
-     */
-    private ConverterInterface $fieldTypeConverter;
-
-    /**
-     * @var CollectionFactory
-     */
-    private CollectionFactory $customerCollectionFactory;
-
-    /**
-     * @var CustomerPriceFieldNameResolver
-     */
-    private CustomerPriceFieldNameResolver $customerPriceFieldNameResolver;
-
     /**
      * CustomerPriceField
      *
@@ -40,13 +24,10 @@ class CustomerPriceField implements FieldProviderInterface
      * @param CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
      */
     public function __construct(
-        ConverterInterface $fieldTypeConverter,
-        CollectionFactory $customerCollectionFactory,
-        CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
+        private readonly ConverterInterface $fieldTypeConverter,
+        private readonly CollectionFactory $customerCollectionFactory,
+        private readonly CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
     ) {
-        $this->fieldTypeConverter = $fieldTypeConverter;
-        $this->customerCollectionFactory = $customerCollectionFactory;
-        $this->customerPriceFieldNameResolver = $customerPriceFieldNameResolver;
     }
 
     /**
@@ -55,21 +36,19 @@ class CustomerPriceField implements FieldProviderInterface
     public function getFields(array $context = []): array
     {
         $fields = [];
-
         $collection = $this->customerCollectionFactory->create();
-        $collection->addFieldToSelect(['entity_id', 'website_id']);
-
+        $collection->addFieldToSelect('entity_id');
+        $collection->addFieldToSelect('website_id');
+        if (isset($context['websiteId'])) {
+            $collection->addFieldToFilter('website_id', $context['websiteId']);
+        }
+        $type = $this->fieldTypeConverter->convert(ConverterInterface::INTERNAL_DATA_TYPE_FLOAT);
         /** @var CustomerInterface $customer */
         foreach ($collection->getItems() as $customer) {
             $fieldName = $this->customerPriceFieldNameResolver->resolve(
                 ['websiteId' => $customer->getWebsiteId(), 'customerId' => $customer->getId()]
             );
-            $fields[$fieldName] = [
-                'type' => $this->fieldTypeConverter->convert(
-                    ConverterInterface::INTERNAL_DATA_TYPE_FLOAT
-                ),
-                'store' => true
-            ];
+            $fields[$fieldName] = ['type' => $type, 'store' => true];
         }
 
         return $fields;
