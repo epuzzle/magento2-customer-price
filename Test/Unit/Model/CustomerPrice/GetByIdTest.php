@@ -41,7 +41,7 @@ class GetByIdTest extends TestCase
             ->getMock();
         $entityFactory = $this->getMockBuilder(CustomerPriceFactory::class)
             ->disableOriginalConstructor()
-            ->setMethods(['create'])
+            ->onlyMethods(['create'])
             ->getMock();
         $entityFactory->expects($this->any())
             ->method('create')
