@@ -9,7 +9,6 @@ use Magento\Framework\Model\AbstractModel;
 
 /**
  * The model of the customer price entity
- *
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  */
@@ -19,7 +18,6 @@ class CustomerPrice extends AbstractModel implements CustomerPriceInterface
      * @var string
      */
     protected $_cacheTag = 'epuzzle_customer_price';
-
     /**
      * @var string
      */
@@ -42,6 +40,8 @@ class CustomerPrice extends AbstractModel implements CustomerPriceInterface
         if ($this->hasDataChanges()) {
             $this->setData('updated_at');
         }
+
+        return parent::beforeSave();
     }
 
     /**

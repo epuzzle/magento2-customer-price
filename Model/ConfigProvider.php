@@ -28,7 +28,7 @@ class ConfigProvider
      * @param int|null $websiteId
      * @return bool
      */
-    public function isEnabled(int $websiteId = null): bool
+    public function isEnabled(?int $websiteId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
             'epuzzle_customer_price/general/enabled',
@@ -43,7 +43,7 @@ class ConfigProvider
      * @param int|null $websiteId
      * @return string
      */
-    public function getCollectorType(int $websiteId = null): string
+    public function getCollectorType(?int $websiteId = null): string
     {
         return $this->scopeConfig->getValue(
             'epuzzle_customer_price/apply/collector_type',

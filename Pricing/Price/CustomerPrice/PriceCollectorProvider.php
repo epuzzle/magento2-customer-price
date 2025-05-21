@@ -33,7 +33,7 @@ class PriceCollectorProvider
      * @return PriceCollectorInterface
      * @throws InvalidArgumentException
      */
-    public function get(string $type = null): PriceCollectorInterface
+    public function get(?string $type = null): PriceCollectorInterface
     {
         $type = $type ?: $this->configProvider->getCollectorType();
         if (!isset($this->collectors[$type])) {
