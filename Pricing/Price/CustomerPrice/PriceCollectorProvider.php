@@ -9,7 +9,6 @@ use Magento\Framework\Exception\InvalidArgumentException;
 
 /**
  * Used to provide the customer price collector
- *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
 class PriceCollectorProvider
@@ -43,5 +42,20 @@ class PriceCollectorProvider
         }
 
         return $this->collectors[$type];
+    }
+
+    /**
+     * Get the customer price collector if an error occurred, then return null
+     *
+     * @param string|null $type
+     * @return PriceCollectorInterface|null
+     */
+    public function getWithNull(?string $type = null): ?PriceCollectorInterface
+    {
+        try {
+            return $this->get($type);
+        } catch (InvalidArgumentException) {
+            return null;
+        }
     }
 }

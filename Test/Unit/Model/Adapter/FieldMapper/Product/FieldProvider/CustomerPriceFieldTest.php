@@ -7,6 +7,8 @@ namespace EPuzzle\CustomerPrice\Test\Unit\Model\Adapter\FieldMapper\Product\Fiel
 use EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\CustomerPriceField;
 use EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
 use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
+use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollectorInterface;
+use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollectorProvider;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Model\ResourceModel\Customer\Collection;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory;
@@ -28,6 +30,16 @@ class CustomerPriceFieldTest extends TestCase
      * @var CustomerPriceField
      */
     private CustomerPriceField $customerPriceField;
+
+    /**
+     * @var PriceCollectorInterface|MockObject
+     */
+    private PriceCollectorInterface $priceCollector;
+
+    /**
+     * @var PriceCollectorProvider|MockObject
+     */
+    private PriceCollectorProvider $priceCollectorProvider;
 
     /**
      * @inheritDoc
@@ -66,10 +78,19 @@ class CustomerPriceFieldTest extends TestCase
             ->method('convert')
             ->with(ConverterInterface::INTERNAL_DATA_TYPE_FLOAT)
             ->willReturn('double');
+        $this->priceCollectorProvider = $this->createMock(PriceCollectorProvider::class);
+        $this->priceCollector = $this->createMock(PriceCollectorInterface::class);
+        $this->priceCollector->expects($this->any())
+            ->method('isSearchable')
+            ->willReturn(true);
+        $this->priceCollectorProvider->expects($this->any())
+            ->method('getWithNull')
+            ->willReturn($this->priceCollector);
         $this->customerPriceField = new CustomerPriceField(
             $fieldTypeConverter,
             $customerCollectionFactory,
-            $customerPriceFieldNameResolver
+            $customerPriceFieldNameResolver,
+            $this->priceCollectorProvider
         );
     }
 

@@ -9,6 +9,8 @@ use EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldN
 use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
 use EPuzzle\CustomerPrice\Model\Customer\GetScopeCustomerIdsGroupIds;
 use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
+use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollectorInterface;
+use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollectorProvider;
 use Magento\CatalogSearch\Model\Indexer\Fulltext\Action\DataProvider;
 use Magento\Elasticsearch\Model\ResourceModel\Index;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
@@ -50,6 +52,16 @@ class CustomerPriceFieldsProviderTest extends TestCase
     private GetScopeCustomerIdsGroupIds $getScopeCustomerIdsGroupIds;
 
     /**
+     * @var PriceCollectorInterface|MockObject
+     */
+    private PriceCollectorInterface $priceCollector;
+
+    /**
+     * @var PriceCollectorProvider|MockObject
+     */
+    private PriceCollectorProvider $priceCollectorProvider;
+
+    /**
      * @var CustomerPriceFieldNameResolver
      */
     private CustomerPriceFieldNameResolver $customerPriceFieldNameResolver;
@@ -61,7 +73,6 @@ class CustomerPriceFieldsProviderTest extends TestCase
 
     /**
      * @inheritDoc
-     *
      * @SuppressWarnings(PHPMD.LongVariable)
      */
     protected function setUp(): void
@@ -75,14 +86,22 @@ class CustomerPriceFieldsProviderTest extends TestCase
         $this->customerPriceFieldNameResolver = new CustomerPriceFieldNameResolver(
             $customerProvider
         );
-
+        $this->priceCollectorProvider = $this->createMock(PriceCollectorProvider::class);
+        $this->priceCollector = $this->createMock(PriceCollectorInterface::class);
+        $this->priceCollector->expects($this->any())
+            ->method('isSearchable')
+            ->willReturn(true);
+        $this->priceCollectorProvider->expects($this->any())
+            ->method('getWithNull')
+            ->willReturn($this->priceCollector);
         $this->customerPriceFieldsProvider = new CustomerPriceFieldsProvider(
             $this->resource,
             $this->priceResourceIndex,
             $this->dataProvider,
             $this->storeManager,
             $this->getScopeCustomerIdsGroupIds,
-            $this->customerPriceFieldNameResolver
+            $this->customerPriceFieldNameResolver,
+            $this->priceCollectorProvider
         );
     }
 
@@ -93,7 +112,7 @@ class CustomerPriceFieldsProviderTest extends TestCase
      * @param array $customerIdsGroupIds
      * @param string $attributeCode
      * @param array $expectedValue
-     * @see CustomerPriceFieldsProvider::getFields()
+     * @see          CustomerPriceFieldsProvider::getFields()
      */
     public function testGetFields(
         int $storeId,
@@ -104,7 +123,6 @@ class CustomerPriceFieldsProviderTest extends TestCase
     ): void {
         $objectManager = new ObjectManager($this);
         $websiteId = $storeId;
-
         /** @var Store $store */
         $store = $objectManager->getObject(Store::class);
         $store->setWebsiteId($websiteId);
@@ -128,7 +146,6 @@ class CustomerPriceFieldsProviderTest extends TestCase
             ->method('getPriceIndexData')
             ->with($productIds, $websiteId)
             ->willReturn($this->getCustomerPriceIndexData($productIds, array_keys($customerIdsGroupIds)));
-
         $this->assertEquals(
             $expectedValue,
             $this->customerPriceFieldsProvider->getFields($productIds, $storeId)
@@ -144,7 +161,7 @@ class CustomerPriceFieldsProviderTest extends TestCase
             // [storeId/websiteId, productIds, customerIdsGroupIds, attributeCode, expectedValue]
             [
                 1,
-                [1,2,3],
+                [1, 2, 3],
                 [
                     // [customerId, groupId]
                     1 => 1,
@@ -172,7 +189,7 @@ class CustomerPriceFieldsProviderTest extends TestCase
             ],
             [
                 2,
-                [4,5,6],
+                [4, 5, 6],
                 [
                     // [customerId, groupId]
                     4 => 2,
@@ -200,7 +217,7 @@ class CustomerPriceFieldsProviderTest extends TestCase
             ],
             [
                 3,
-                [4,5,6],
+                [4, 5, 6],
                 [
                     // [customerId, groupId]
                     4 => 3,
@@ -239,7 +256,6 @@ class CustomerPriceFieldsProviderTest extends TestCase
     private function getCustomerPriceIndexData(array $productIds, array $customerIds): array
     {
         $indexData = [];
-
         foreach ($productIds as $productId) {
             foreach ($customerIds as $customerId) {
                 $indexData[$productId][$customerId] = 10;
@@ -259,7 +275,6 @@ class CustomerPriceFieldsProviderTest extends TestCase
     private function getPriceIndexData(array $productIds, array $groupIds): array
     {
         $indexData = [];
-
         $groupIds = array_unique($groupIds);
         foreach ($productIds as $productId) {
             foreach ($groupIds as $groupId) {
