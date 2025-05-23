@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EPuzzle\CustomerPrice\Api\Data;
 
 /**
- * Used to CRUD the customer prices
+ * The customer price entity
  */
 interface CustomerPriceInterface
 {

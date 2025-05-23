@@ -6,8 +6,9 @@
     * The `CustomerPriceRepositoryInterface::getList` method was changed. The result is search results entity
     * Added the `epuzzle/magento2-module-base` module as a required dependency
     * ACL structure was changed. Depends on the `epuzzle/magento2-module-base` module
-    * The di/events.xml were changed. The plugin names, keys, etc. were changed
-    * The customer price code was changed.
+    * The di.xml, events.xml, etc. were changed. The plugin names, keys, etc. were changed
+    * The customer price code was changed
+    * The module is enabled by default
 * New features:
     * Supported new Magento and PHP versions
     * Supported configurable and grouped products - if the simple product has a customer price, the parent product will

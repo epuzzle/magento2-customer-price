@@ -8,7 +8,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
 
 /**
- * Used to CRUD the customer prices
+ * Used to CRUD the customer price entity
  */
 interface CustomerPriceRepositoryInterface
 {

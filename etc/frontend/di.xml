@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <!-- Indexer and Cache -->
+    <!-- Cache -->
     <type name="Magento\Framework\App\Http\Context">
         <plugin name="epuzzle-customer-price-add-customer-context-variable"
                 type="EPuzzle\CustomerPrice\Plugin\App\Http\Context\AddCustomerPriceVariableToContext"
                 sortOrder="10"/>
     </type>
-    <!-- Indexer and Cache -->
+    <!-- /Cache -->
 </config>

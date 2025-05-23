@@ -18,7 +18,7 @@ use Magento\Framework\DB\Select;
 class LinkedProductCustomerPrice
 {
     /**
-     * LinkedProductCustomerPriceToSelect
+     * LinkedProductCustomerPrice
      *
      * @param CustomerPriceBaseSelectProcessor $customerPriceBaseSelectProcessor
      * @param ConfigProvider $configProvider

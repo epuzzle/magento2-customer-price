@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EPuzzle\CustomerPrice\Model\Customer;
 
+use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
 use Magento\Framework\App\ResourceConnection;
 
 /**
@@ -48,7 +49,7 @@ class ExistingCustomerPriceByStrategy
         }
 
         $select = $this->resourceConnection->getConnection()->select();
-        $select->from($this->resourceConnection->getTableName('epuzzle_customer_price'), 'COUNT(*)');
+        $select->from($this->resourceConnection->getTableName(CustomerPrice::TABLE_NAME), 'COUNT(*)');
         $select->where($strategy . ' = ?', $value);
         $size = $this->resourceConnection->getConnection()->fetchOne($select);
         return $this->cache[$cacheKey] = $size > 0;
