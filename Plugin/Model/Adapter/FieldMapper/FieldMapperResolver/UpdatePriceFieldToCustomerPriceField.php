@@ -6,37 +6,27 @@ namespace EPuzzle\CustomerPrice\Plugin\Model\Adapter\FieldMapper\FieldMapperReso
 
 use EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
 use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
+use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollectorProvider;
 use Magento\Elasticsearch\Model\Adapter\FieldMapperInterface;
 
 /**
  * Updating the price field to the customer price field
- *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
 class UpdatePriceFieldToCustomerPriceField
 {
     /**
-     * @var CustomerProviderInterface
-     */
-    private CustomerProviderInterface $customerProvider;
-
-    /**
-     * @var CustomerPriceFieldNameResolver
-     */
-    private CustomerPriceFieldNameResolver $customerPriceFieldNameResolver;
-
-    /**
      * UpdatePriceFieldToCustomerPriceField
      *
      * @param CustomerProviderInterface $customerProvider
      * @param CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
+     * @param PriceCollectorProvider $priceCollectorProvider
      */
     public function __construct(
-        CustomerProviderInterface $customerProvider,
-        CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
+        private readonly CustomerProviderInterface $customerProvider,
+        private readonly CustomerPriceFieldNameResolver $customerPriceFieldNameResolver,
+        private readonly PriceCollectorProvider $priceCollectorProvider
     ) {
-        $this->customerProvider = $customerProvider;
-        $this->customerPriceFieldNameResolver = $customerPriceFieldNameResolver;
     }
 
     /**
@@ -54,7 +44,9 @@ class UpdatePriceFieldToCustomerPriceField
         string $fieldName,
         string $attributeCode
     ): string {
-        if ('price' === $attributeCode && $this->customerProvider->getCustomerId()) {
+        if ('price' === $attributeCode
+            && $this->customerProvider->getCustomerId()
+            && $this->priceCollectorProvider->getWithNull()?->isSearchable()) {
             return $this->customerPriceFieldNameResolver->resolve(
                 [
                     'websiteId' => $this->customerProvider->getWebsiteId(),
@@ -62,6 +54,7 @@ class UpdatePriceFieldToCustomerPriceField
                 ]
             );
         }
+
         return $fieldName;
     }
 }

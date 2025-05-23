@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace EPuzzle\CustomerPrice\Plugin\App\Http\Context;
 
+use EPuzzle\CustomerPrice\Model\ConfigProvider;
 use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
 use EPuzzle\CustomerPrice\Model\Customer\ExistingCustomerPriceByStrategy;
 use Magento\Framework\App\Http\Context;
 
 /**
  * Adding the customer price variable to the context
- *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
 class AddCustomerPriceVariableToContext
@@ -18,27 +18,17 @@ class AddCustomerPriceVariableToContext
     private const KEY = 'EP_CUSTOMER_ID';
 
     /**
-     * @var CustomerProviderInterface
-     */
-    private CustomerProviderInterface $customerProvider;
-
-    /**
-     * @var ExistingCustomerPriceByStrategy
-     */
-    private ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy;
-
-    /**
      * AddCustomerPriceVariableToContext
      *
      * @param CustomerProviderInterface $customerProvider
      * @param ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy
+     * @param ConfigProvider $configProvider
      */
     public function __construct(
-        CustomerProviderInterface $customerProvider,
-        ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy
+        private readonly CustomerProviderInterface $customerProvider,
+        private readonly ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy,
+        private readonly ConfigProvider $configProvider
     ) {
-        $this->customerProvider = $customerProvider;
-        $this->existingCustomerPriceByStrategy = $existingCustomerPriceByStrategy;
     }
 
     /**
@@ -49,7 +39,8 @@ class AddCustomerPriceVariableToContext
      */
     public function beforeGetVaryString(Context $context): void
     {
-        if (($customerId = $this->customerProvider->getCustomerId())
+        if ($this->configProvider->isConfigured()
+            && ($customerId = $this->customerProvider->getCustomerId())
             && $this->existingCustomerPriceByStrategy->execute(
                 (int)$customerId,
                 ExistingCustomerPriceByStrategy::STRATEGY_CUSTOMER

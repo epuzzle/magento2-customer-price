@@ -4,8 +4,10 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="EPuzzle_CustomerPrice::base" title="Customer Prices" sortOrder="100">
-                    <resource id="EPuzzle_CustomerPrice::webapi" title="Webapi" sortOrder="10"/>
+                <resource id="EPuzzle_Base::base">
+                    <resource id="EPuzzle_CustomerPrice::base" title="Customer Prices" sortOrder="100">
+                        <resource id="EPuzzle_CustomerPrice::webapi" title="Webapi" sortOrder="10"/>
+                    </resource>
                 </resource>
             </resource>
         </resources>

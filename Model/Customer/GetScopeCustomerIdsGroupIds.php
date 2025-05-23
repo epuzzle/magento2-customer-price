@@ -12,11 +12,6 @@ use Magento\Framework\App\ResourceConnection;
 class GetScopeCustomerIdsGroupIds
 {
     /**
-     * @var ResourceConnection
-     */
-    private ResourceConnection $resourceConnection;
-
-    /**
      * @var array[]
      */
     private array $cache = [];
@@ -27,9 +22,8 @@ class GetScopeCustomerIdsGroupIds
      * @param ResourceConnection $resourceConnection
      */
     public function __construct(
-        ResourceConnection $resourceConnection
+        private ResourceConnection $resourceConnection
     ) {
-        $this->resourceConnection = $resourceConnection;
     }
 
     /**

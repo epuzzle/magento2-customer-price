@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace EPuzzle\CustomerPrice\Plugin\Model\ResourceModel\CustomerPrice\CustomerPrice;
 
-use EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterface;
 use EPuzzle\CustomerPrice\Model\Command\FlushCacheByTags;
+use EPuzzle\CustomerPrice\Model\CustomerPrice;
 use EPuzzle\CustomerPrice\Model\Product\GetParentIds;
-use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
-use Magento\Catalog\Api\Data\ProductInterfaceFactory;
+use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice as CustomerPriceResource;
+use Magento\Catalog\Model\ProductFactory;
 use Magento\CatalogSearch\Model\Indexer\Fulltext;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\Indexer\IndexerRegistry;
@@ -21,64 +21,34 @@ use Magento\PageCache\Model\Cache\Type;
 class ReindexAndFlushCache
 {
     /**
-     * @var IndexerRegistry
-     */
-    private IndexerRegistry $indexerRegistry;
-
-    /**
-     * @var TypeListInterface
-     */
-    private TypeListInterface $cacheTypeList;
-
-    /**
-     * @var FlushCacheByTags
-     */
-    private FlushCacheByTags $flushCacheByTags;
-
-    /**
-     * @var ProductInterfaceFactory
-     */
-    private ProductInterfaceFactory $productFactory;
-
-    /**
-     * @var GetParentIds
-     */
-    private GetParentIds $getParentIds;
-
-    /**
      * ReindexAndFlushCache
      *
      * @param IndexerRegistry $indexerRegistry
      * @param TypeListInterface $cacheTypeList
      * @param FlushCacheByTags $flushCacheByTags
-     * @param ProductInterfaceFactory $productFactory
+     * @param ProductFactory $productFactory
      * @param GetParentIds $getParentIds
      */
     public function __construct(
-        IndexerRegistry $indexerRegistry,
-        TypeListInterface $cacheTypeList,
-        FlushCacheByTags $flushCacheByTags,
-        ProductInterfaceFactory $productFactory,
-        GetParentIds $getParentIds
+        private readonly IndexerRegistry $indexerRegistry,
+        private readonly TypeListInterface $cacheTypeList,
+        private readonly FlushCacheByTags $flushCacheByTags,
+        private readonly ProductFactory $productFactory,
+        private readonly GetParentIds $getParentIds
     ) {
-        $this->indexerRegistry = $indexerRegistry;
-        $this->cacheTypeList = $cacheTypeList;
-        $this->flushCacheByTags = $flushCacheByTags;
-        $this->productFactory = $productFactory;
-        $this->getParentIds = $getParentIds;
     }
 
     /**
      * Re-index the catalog search indexer after saving the entity
      *
-     * @param CustomerPrice $resource
-     * @param CustomerPriceInterface $entity
+     * @param CustomerPriceResource $resource
+     * @param CustomerPrice $entity
      * @return void
      * @see CustomerPrice::save()
      */
     public function beforeSave(
-        CustomerPrice $resource,
-        CustomerPriceInterface $entity
+        CustomerPriceResource $resource,
+        CustomerPrice $entity
     ): void {
         $resource->addCommitCallback(function () use ($entity) {
             $this->reindexRow((int)$entity->getProductId());
@@ -88,23 +58,22 @@ class ReindexAndFlushCache
     /**
      * Clean up the full page cache after saving
      *
-     * @param CustomerPrice $customerPrice
-     * @param CustomerPrice $result
-     * @param CustomerPriceInterface $entity
-     * @return CustomerPrice
+     * @param CustomerPriceResource $customerPrice
+     * @param CustomerPriceResource $result
+     * @param CustomerPrice $entity
+     * @return CustomerPriceResource
      * @see CustomerPrice::save()
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function afterSave(
-        CustomerPrice $customerPrice,
-        CustomerPrice $result,
-        CustomerPriceInterface $entity
-    ): CustomerPrice {
+        CustomerPriceResource $customerPrice,
+        CustomerPriceResource $result,
+        CustomerPrice $entity
+    ): CustomerPriceResource {
         $this->flushCacheForEntity(
             $this->productFactory->create()
                 ->setId($entity->getProductId())
         );
-
         foreach ($this->getParentIds->execute((int)$entity->getProductId()) as $productId) {
             $this->flushCacheForEntity(
                 $this->productFactory->create()
@@ -118,14 +87,14 @@ class ReindexAndFlushCache
     /**
      * Re-index the catalog search indexer after deleting the entity
      *
-     * @param CustomerPrice $customerPrice
-     * @param CustomerPriceInterface $entity
+     * @param CustomerPriceResource $customerPrice
+     * @param CustomerPrice $entity
      * @return void
      * @see CustomerPrice::delete()
      */
     public function beforeDelete(
-        CustomerPrice $customerPrice,
-        CustomerPriceInterface $entity
+        CustomerPriceResource $customerPrice,
+        CustomerPrice $entity
     ): void {
         $customerPrice->addCommitCallback(function () use ($entity) {
             $this->reindexRow((int)$entity->getProductId());
@@ -135,22 +104,22 @@ class ReindexAndFlushCache
     /**
      * Clean up the full page cache after deleting
      *
-     * @param CustomerPrice $customerPrice
-     * @param CustomerPrice $result
-     * @param CustomerPriceInterface $entity
-     * @return CustomerPrice
+     * @param CustomerPriceResource $customerPrice
+     * @param CustomerPriceResource $result
+     * @param CustomerPrice $entity
+     * @return CustomerPriceResource
      * @see CustomerPrice::delete()
-     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function afterDelete(
-        CustomerPrice $customerPrice,
-        CustomerPrice $result,
-        CustomerPriceInterface $entity
-    ): CustomerPrice {
+        CustomerPriceResource $customerPrice,
+        CustomerPriceResource $result,
+        CustomerPrice $entity
+    ): CustomerPriceResource {
         $this->flushCacheForEntity(
             $this->productFactory->create()->setId($entity->getProductId())
         );
+
         return $result;
     }
 
@@ -177,7 +146,6 @@ class ReindexAndFlushCache
     {
         // clean up the entity cache by tags
         $this->flushCacheByTags->execute($entity);
-
         if (!$this->isScheduled(Fulltext::INDEXER_ID)) {
             // clean up full page cache
             $this->cacheTypeList->cleanType(Type::TYPE_IDENTIFIER);
@@ -193,6 +161,7 @@ class ReindexAndFlushCache
     public function isScheduled(string $indexer): bool
     {
         $indexer = $this->indexerRegistry->get($indexer);
+
         return $indexer->isScheduled();
     }
 }

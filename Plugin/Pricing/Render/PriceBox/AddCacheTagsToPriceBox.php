@@ -16,27 +16,15 @@ use Magento\Framework\Pricing\Render\PriceBox;
 class AddCacheTagsToPriceBox
 {
     /**
-     * @var CustomerProviderInterface
-     */
-    private CustomerProviderInterface $customerProvider;
-
-    /**
-     * @var ExistingCustomerPriceByStrategy
-     */
-    private ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy;
-
-    /**
      * AddCacheTagsToPriceBox
      *
      * @param CustomerProviderInterface $customerProvider
      * @param ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy
      */
     public function __construct(
-        CustomerProviderInterface $customerProvider,
-        ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy
+        private readonly CustomerProviderInterface $customerProvider,
+        private readonly ExistingCustomerPriceByStrategy $existingCustomerPriceByStrategy
     ) {
-        $this->customerProvider = $customerProvider;
-        $this->existingCustomerPriceByStrategy = $existingCustomerPriceByStrategy;
     }
 
     /**

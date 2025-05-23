@@ -16,26 +16,6 @@ use Zend_Cache;
 class FlushCacheByTags
 {
     /**
-     * @var FrontendPool
-     */
-    private FrontendPool $cachePool;
-
-    /**
-     * @var string[]
-     */
-    private array $cacheList;
-
-    /**
-     * @var StateInterface
-     */
-    private StateInterface $cacheState;
-
-    /**
-     * @var Resolver
-     */
-    private Resolver $tagResolver;
-
-    /**
      * FlushCacheByTags
      *
      * @param FrontendPool $cachePool
@@ -44,15 +24,11 @@ class FlushCacheByTags
      * @param Resolver $tagResolver
      */
     public function __construct(
-        FrontendPool $cachePool,
-        StateInterface $cacheState,
-        array $cacheList,
-        Resolver $tagResolver
+        private readonly FrontendPool $cachePool,
+        private readonly StateInterface $cacheState,
+        private array $cacheList,
+        private readonly Resolver $tagResolver
     ) {
-        $this->cachePool = $cachePool;
-        $this->cacheState = $cacheState;
-        $this->cacheList = $cacheList;
-        $this->tagResolver = $tagResolver;
     }
 
     /**

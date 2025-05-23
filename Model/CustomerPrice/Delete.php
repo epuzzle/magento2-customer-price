@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace EPuzzle\CustomerPrice\Model\CustomerPrice;
 
 use EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterface;
-use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
+use EPuzzle\CustomerPrice\Model\CustomerPrice;
+use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice as Resource;
 use Exception;
 use Magento\Framework\Exception\CouldNotDeleteException;
 
@@ -15,19 +16,13 @@ use Magento\Framework\Exception\CouldNotDeleteException;
 class Delete
 {
     /**
-     * @var CustomerPrice
-     */
-    private CustomerPrice $resource;
-
-    /**
      * Delete
      *
-     * @param CustomerPrice $resource
+     * @param Resource $resource
      */
     public function __construct(
-        CustomerPrice $resource
+        private readonly Resource $resource
     ) {
-        $this->resource = $resource;
     }
 
     /**
@@ -39,6 +34,7 @@ class Delete
      */
     public function execute(CustomerPriceInterface $entity): void
     {
+        /** @var CustomerPrice $entity */
         try {
             $this->resource->delete($entity);
         } catch (Exception $exception) {

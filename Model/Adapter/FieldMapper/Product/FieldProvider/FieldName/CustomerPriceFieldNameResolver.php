@@ -12,19 +12,13 @@ use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
 class CustomerPriceFieldNameResolver
 {
     /**
-     * @var CustomerProviderInterface
-     */
-    private CustomerProviderInterface $customerProvider;
-
-    /**
      * CustomerPriceFieldNameResolver
      *
      * @param CustomerProviderInterface $customerProvider
      */
     public function __construct(
-        CustomerProviderInterface $customerProvider
+        private CustomerProviderInterface $customerProvider
     ) {
-        $this->customerProvider = $customerProvider;
     }
 
     /**

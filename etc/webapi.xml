@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-    <route url="/V1/customer-price/:itemId" method="GET">
+    <route url="/V1/epuzzle-customer-price/:itemId" method="GET">
         <service class="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="get"/>
         <resources>
             <resource ref="EPuzzle_CustomerPrice::webapi"/>
         </resources>
     </route>
-    <route url="/V1/customer-price" method="POST">
+    <route url="/V1/epuzzle-customer-price" method="POST">
         <service class="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="save"/>
         <resources>
             <resource ref="EPuzzle_CustomerPrice::webapi"/>
         </resources>
     </route>
-    <route url="/V1/customer-price/:itemId" method="PUT">
+    <route url="/V1/epuzzle-customer-price/:itemId" method="PUT">
         <service class="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="save"/>
         <resources>
             <resource ref="EPuzzle_CustomerPrice::webapi"/>
         </resources>
     </route>
-    <route url="/V1/customer-price/:itemId" method="DELETE">
+    <route url="/V1/epuzzle-customer-price/:itemId" method="DELETE">
         <service class="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="deleteById"/>
         <resources>
             <resource ref="EPuzzle_CustomerPrice::webapi"/>
         </resources>
     </route>
-    <route url="/V1/customer-price" method="GET">
+    <route url="/V1/epuzzle-customer-price" method="GET">
         <service class="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" method="getList"/>
         <resources>
             <resource ref="EPuzzle_CustomerPrice::webapi"/>

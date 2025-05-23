@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace EPuzzle\CustomerPrice\Api;
 
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
 
 /**
- * Used to CRUD the customer prices
+ * Used to CRUD the customer price entity
  */
 interface CustomerPriceRepositoryInterface
 {
@@ -51,7 +52,22 @@ interface CustomerPriceRepositoryInterface
      * Get a list of customer prices
      *
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-     * @return \EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterface[]
+     * @return \EPuzzle\CustomerPrice\Api\Data\CustomerPriceSearchResultsInterface
      */
-    public function getList(SearchCriteriaInterface $searchCriteria): array;
+    public function getList(SearchCriteriaInterface $searchCriteria): Data\CustomerPriceSearchResultsInterface;
+
+    /**
+     * Create the customer price
+     *
+     * @return \EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterface
+     */
+    public function create(): Data\CustomerPriceInterface;
+
+    /**
+     * Create search criteria
+     *
+     * @param array $data
+     * @return \Magento\Framework\Api\SearchCriteriaBuilder
+     */
+    public function createSearchCriteriaBuilder(array $data = []): SearchCriteriaBuilder;
 }

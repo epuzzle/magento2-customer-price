@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-/**
- * Customer prices for Magento 2 platform
- *
- * @author Dmytro Kaplin <dkaplin1994@gmail.com>
- * @license https://github.com/epuzzle/magento2-customer-price/blob/production/LICENSE
- */
- -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterface"
-                type="EPuzzle\CustomerPrice\Model\CustomerPrice"/>
-    <preference for="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface"
-                type="EPuzzle\CustomerPrice\Model\CustomerPriceRepository"/>
-    <preference for="EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface"
-                type="EPuzzle\CustomerPrice\Model\Customer\CustomerProvider"/>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterface" type="EPuzzle\CustomerPrice\Model\CustomerPrice"/>
+    <preference for="EPuzzle\CustomerPrice\Api\Data\CustomerPriceSearchResultsInterface" type="EPuzzle\CustomerPrice\Model\CustomerPriceSearchResults"/>
+    <preference for="EPuzzle\CustomerPrice\Api\CustomerPriceRepositoryInterface" type="EPuzzle\CustomerPrice\Model\CustomerPriceRepository"/>
+    <preference for="EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface" type="EPuzzle\CustomerPrice\Model\Customer\CustomerProvider"/>
 
     <type name="EPuzzle\CustomerPrice\Model\CustomerPriceRepository">
         <arguments>
@@ -26,37 +15,51 @@
         </arguments>
     </type>
 
+    <!-- Price Models and Collectors -->
     <virtualType name="Magento\Catalog\Pricing\Price\Pool">
         <arguments>
             <argument name="prices" xsi:type="array">
-                <item name="epCustomerPrice" xsi:type="string">EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice</item>
+                <item name="epuzzle-customer-price" xsi:type="string">EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice</item>
             </argument>
         </arguments>
     </virtualType>
+    <type name="Magento\Catalog\Model\ResourceModel\Product\LinkedProductSelectBuilderInterface">
+        <plugin name="epuzzle-customer-price-linked-product-customer-price"
+                type="EPuzzle\CustomerPrice\Plugin\Model\ResourceModel\Product\LinkedProductSelectBuilder\LinkedProductCustomerPrice"
+                sortOrder="10"/>
+    </type>
+    <type name="EPuzzle\CustomerPrice\Model\ConfigProvider">
+        <arguments>
+            <argument name="collectors" xsi:type="array">
+                <item name="default" xsi:type="object">EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollector</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- /Price Models and Collectors -->
 
+    <!-- Indexer -->
     <virtualType name="additionalFieldsProviderForElasticsearch">
         <arguments>
             <argument name="fieldsProviders" xsi:type="array">
-                <item name="epCustomerPriceFields" xsi:type="object">EPuzzle\CustomerPrice\Model\Adapter\BatchDataMapper\CustomerPriceFieldsProvider</item>
+                <item name="epuzzleCustomerPriceFields" xsi:type="object">EPuzzle\CustomerPrice\Model\Adapter\BatchDataMapper\CustomerPriceFieldsProvider</item>
             </argument>
         </arguments>
     </virtualType>
-
     <type name="Magento\Elasticsearch\Model\Adapter\FieldMapper\Product\CompositeFieldProvider">
         <arguments>
             <argument name="providers" xsi:type="array">
-                <item name="epCustomerPrice" xsi:type="object">EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\CustomerPriceField</item>
+                <item name="epuzzleCustomerPrice" xsi:type="object">EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\CustomerPriceField</item>
             </argument>
         </arguments>
     </type>
-
     <type name="Magento\Elasticsearch\Model\Adapter\FieldMapperInterface">
-        <plugin name="epUpdatePriceFieldToCustomerPrice"
+        <plugin name="epuzzle-customer-price-update-price-field-to-customer-price"
                 type="EPuzzle\CustomerPrice\Plugin\Model\Adapter\FieldMapper\FieldMapperResolver\UpdatePriceFieldToCustomerPriceField"
                 sortOrder="10"/>
     </type>
+    <!-- /Indexer -->
 
-    <!-- Indexer and Cache -->
+    <!-- Cache -->
     <type name="EPuzzle\CustomerPrice\Model\Command\FlushCacheByTags">
         <arguments>
             <argument name="cacheList" xsi:type="array">
@@ -65,23 +68,20 @@
             </argument>
         </arguments>
     </type>
-
     <type name="EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice">
-        <plugin name="epReindexAfterSaveCustomerPrice"
+        <plugin name="epuzzle-customer-price-reindex-after-save-customer-price"
                 type="EPuzzle\CustomerPrice\Plugin\Model\ResourceModel\CustomerPrice\CustomerPrice\ReindexAndFlushCache"
                 sortOrder="10"/>
     </type>
-
     <type name="Magento\Framework\Pricing\Render\PriceBox">
-        <plugin name="epAddCacheTagsForPriceBox"
+        <plugin name="epuzzle-customer-price-aad-cache-tags-for-price-box"
                 type="EPuzzle\CustomerPrice\Plugin\Pricing\Render\PriceBox\AddCacheTagsToPriceBox"
                 sortOrder="10"/>
     </type>
-
     <type name="Magento\CatalogSearch\Model\Indexer\Mview\Action">
-        <plugin name="epFlushCacheAfterReindex"
+        <plugin name="epuzzle-customer-price-flush-cache-after-reindex"
                 type="EPuzzle\CustomerPrice\Plugin\Model\Indexer\Mview\Action\FlushCacheAfterReindex"
                 sortOrder="10"/>
     </type>
-    <!-- Indexer and Cache -->
+    <!-- /Cache -->
 </config>

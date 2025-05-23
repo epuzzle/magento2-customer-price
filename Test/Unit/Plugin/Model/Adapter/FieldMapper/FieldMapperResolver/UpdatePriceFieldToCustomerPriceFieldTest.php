@@ -7,6 +7,8 @@ namespace EPuzzle\CustomerPrice\Test\Unit\Plugin\Model\Adapter\FieldMapper\Field
 use EPuzzle\CustomerPrice\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
 use EPuzzle\CustomerPrice\Model\Customer\CustomerProviderInterface;
 use EPuzzle\CustomerPrice\Plugin\Model\Adapter\FieldMapper\FieldMapperResolver\UpdatePriceFieldToCustomerPriceField;
+use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollectorInterface;
+use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollectorProvider;
 use Magento\Elasticsearch\Model\Adapter\FieldMapperInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -34,6 +36,16 @@ class UpdatePriceFieldToCustomerPriceFieldTest extends TestCase
     private UpdatePriceFieldToCustomerPriceField $updatePriceFieldToCustomerPriceField;
 
     /**
+     * @var PriceCollectorInterface|MockObject
+     */
+    private PriceCollectorInterface $priceCollector;
+
+    /**
+     * @var PriceCollectorProvider|MockObject
+     */
+    private PriceCollectorProvider $priceCollectorProvider;
+
+    /**
      * @inheritDoc
      */
     protected function setUp(): void
@@ -41,9 +53,18 @@ class UpdatePriceFieldToCustomerPriceFieldTest extends TestCase
         $this->customerProvider = $this->createMock(CustomerProviderInterface::class);
         $customerPriceFieldNameResolver = new CustomerPriceFieldNameResolver($this->customerProvider);
         $this->fieldMapper = $this->createMock(FieldMapperInterface::class);
+        $this->priceCollectorProvider = $this->createMock(PriceCollectorProvider::class);
+        $this->priceCollector = $this->createMock(PriceCollectorInterface::class);
+        $this->priceCollector->expects($this->any())
+            ->method('isSearchable')
+            ->willReturn(true);
+        $this->priceCollectorProvider->expects($this->any())
+            ->method('getWithNull')
+            ->willReturn($this->priceCollector);
         $this->updatePriceFieldToCustomerPriceField = new UpdatePriceFieldToCustomerPriceField(
             $this->customerProvider,
-            $customerPriceFieldNameResolver
+            $customerPriceFieldNameResolver,
+            $this->priceCollectorProvider
         );
     }
 

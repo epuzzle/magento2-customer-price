@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace EPuzzle\CustomerPrice\Model\CustomerPrice;
 
 use EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterface;
-use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
+use EPuzzle\CustomerPrice\Model\CustomerPrice;
+use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice as Resource;
 use Exception;
 use Magento\Framework\Exception\CouldNotSaveException;
 
@@ -15,19 +16,13 @@ use Magento\Framework\Exception\CouldNotSaveException;
 class Save
 {
     /**
-     * @var CustomerPrice
-     */
-    private CustomerPrice $resource;
-
-    /**
      * Save
      *
-     * @param CustomerPrice $resource
+     * @param Resource $resource
      */
     public function __construct(
-        CustomerPrice $resource
+        private readonly Resource $resource
     ) {
-        $this->resource = $resource;
     }
 
     /**
@@ -39,6 +34,7 @@ class Save
      */
     public function execute(CustomerPriceInterface $entity): int
     {
+        /** @var CustomerPrice $entity */
         try {
             $this->resource->save($entity);
         } catch (Exception $exception) {
@@ -47,6 +43,7 @@ class Save
                 $exception
             );
         }
+
         return (int)$entity->getItemId();
     }
 }

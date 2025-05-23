@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EPuzzle\CustomerPrice\Model\CustomerPrice;
 
 use EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterface;
-use EPuzzle\CustomerPrice\Api\Data\CustomerPriceInterfaceFactory;
+use EPuzzle\CustomerPrice\Model\CustomerPriceFactory;
 use EPuzzle\CustomerPrice\Model\ResourceModel\CustomerPrice;
 use Magento\Framework\Exception\NoSuchEntityException;
 
@@ -15,27 +15,15 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class GetById
 {
     /**
-     * @var CustomerPriceInterfaceFactory
-     */
-    private CustomerPriceInterfaceFactory $entityFactory;
-
-    /**
-     * @var CustomerPrice
-     */
-    private CustomerPrice $resource;
-
-    /**
      * GetById
      *
-     * @param CustomerPriceInterfaceFactory $entityFactory
+     * @param CustomerPriceFactory $entityFactory
      * @param CustomerPrice $resource
      */
     public function __construct(
-        CustomerPriceInterfaceFactory $entityFactory,
-        CustomerPrice $resource
+        private readonly CustomerPriceFactory $entityFactory,
+        private readonly CustomerPrice $resource
     ) {
-        $this->entityFactory = $entityFactory;
-        $this->resource = $resource;
     }
 
     /**
@@ -52,6 +40,7 @@ class GetById
         if (!$entity->getId()) {
             throw new NoSuchEntityException(__('Could not get the customer price.'));
         }
+
         return $entity;
     }
 }

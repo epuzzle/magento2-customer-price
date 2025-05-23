@@ -4,11 +4,12 @@
     "config": {
         "sort-packages": true
     },
-    "version": "1.1.1",
+    "version": "2.0.0",
     "require": {
-        "php": "~7.4.0||~8.1.0",
+        "php": "~8.1.0||~8.2.0||~8.3.0||~8.4.0",
         "magento/framework": "*",
-        "magento/module-catalog": "*"
+        "magento/module-catalog": "*",
+        "epuzzle/magento2-module-base": "*"
     },
     "suggest": {},
     "type": "magento2-module",
