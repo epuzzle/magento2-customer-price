@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  * @see LinkedProductCustomerPrice
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-class LinkedProductCustomerPriceSelectTest extends TestCase
+class LinkedProductCustomerPriceTest extends TestCase
 {
     /**
      * @var CustomerPriceBaseSelectProcessor|MockObject
