@@ -12,7 +12,7 @@ use Magento\Framework\Pricing\SaleableInterface;
  */
 interface PriceCollectorInterface extends BasePriceProviderInterface
 {
-    public const PRICE_CODE = 'epCustomerPrice';
+    public const PRICE_CODE = 'epuzzle-customer-price';
 
     /**
      * Collects the customer price for the given product and quantity

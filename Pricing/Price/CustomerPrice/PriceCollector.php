@@ -11,7 +11,6 @@ use Magento\Framework\Pricing\SaleableInterface;
 
 /**
  * The default customer price collector
- *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
 class PriceCollector implements PriceCollectorInterface

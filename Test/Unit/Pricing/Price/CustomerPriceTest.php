@@ -11,7 +11,6 @@ use Magento\Framework\Pricing\Adjustment\CalculatorInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 
 /**
  * @see PriceCollector
@@ -41,11 +40,6 @@ class CustomerPriceTest extends TestCase
     private CustomerPrice\PriceCollectorProvider $priceCollectorProvider;
 
     /**
-     * @var LoggerInterface|MockObject
-     */
-    private LoggerInterface $logger;
-
-    /**
      * @inheritDoc
      */
     protected function setUp(): void
@@ -54,7 +48,6 @@ class CustomerPriceTest extends TestCase
         $this->priceCurrency = $this->createMock(PriceCurrencyInterface::class);
         $this->priceCollector = $this->createMock(CustomerPrice\PriceCollectorInterface::class);
         $this->priceCollectorProvider = $this->createMock(CustomerPrice\PriceCollectorProvider::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
     }
 
     /**
@@ -77,7 +70,7 @@ class CustomerPriceTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->priceCollectorProvider->expects($this->once())
-            ->method('get')
+            ->method('getWithNull')
             ->willReturn($this->priceCollector);
         $this->priceCollector->expects($this->once())
             ->method('collect')
@@ -87,8 +80,7 @@ class CustomerPriceTest extends TestCase
             $qty,
             $this->calculator,
             $this->priceCurrency,
-            $this->priceCollectorProvider,
-            $this->logger
+            $this->priceCollectorProvider
         );
         $this->assertEquals($expectedValue, $customerPrice->getValue());
     }

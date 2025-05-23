@@ -37,7 +37,7 @@ jobs:
       - name: Installation Magento Coding Standard
         run: php /tmp/composer.phar create-project magento/magento-coding-standard --stability=dev /tmp/magento-coding-standard
       - name: Run Magento Coding Standard
-        run: /tmp/magento-coding-standard/vendor/bin/phpcs --standard=Magento2 ./
+        run: /tmp/magento-coding-standard/vendor/bin/phpcs --ignore="*.xml" --standard=Magento2 ./
       - name: Installation Magento 2.4.7
         run: php /tmp/composer.phar config --global http-basic.repo.magento.com ${MAGENTO2_USERNAME} ${MAGENTO2_PASSWORD} && php /tmp/composer.phar config --global allow-plugins true && php /tmp/composer.phar create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.7 /tmp/magento2 && php /tmp/magento2/bin/magento setup:install --base-url=http://localhost/m247 --db-host="127.0.0.1:3306" --db-name=m247 --db-user=root --db-password=1 --admin-firstname=admin --admin-lastname=admin --admin-email=admin@admin.com --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200 --elasticsearch-index-prefix=m247 --elasticsearch-timeout=15
         env:

@@ -75,7 +75,7 @@ class CustomerPrice extends AbstractDb
      * @param array $productIds
      * @return array
      */
-    private function getRelatedProductIds(array $productIds): array
+    public function getRelatedProductIds(array $productIds): array
     {
         // selects all parent products for grouped/configurable products
         $select = $this->getConnection()->select();

@@ -56,3 +56,4 @@ AttributeSetText,AttributeSetText
 Status,Status
 StatusText,StatusText
 Type,Type
+Invalid price collector type: %type,Invalid price collector type: %type

@@ -6,6 +6,7 @@ namespace EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice;
 
 use EPuzzle\CustomerPrice\Model\ConfigProvider;
 use Magento\Framework\Exception\InvalidArgumentException;
+use Magento\Framework\Exception\StateException;
 
 /**
  * Used to provide the customer price collector
@@ -17,44 +18,45 @@ class PriceCollectorProvider
      * PriceCollectorProvider
      *
      * @param ConfigProvider $configProvider
-     * @param PriceCollectorInterface[] $collectors
      */
     public function __construct(
-        private readonly ConfigProvider $configProvider,
-        private array $collectors = []
+        private readonly ConfigProvider $configProvider
     ) {
     }
 
     /**
      * Provides the customer price collector
      *
-     * @param string|null $type
      * @return PriceCollectorInterface
      * @throws InvalidArgumentException
+     * @throws StateException
      */
-    public function get(?string $type = null): PriceCollectorInterface
+    public function get(): PriceCollectorInterface
     {
-        $type = $type ?: $this->configProvider->getCollectorType();
-        if (!isset($this->collectors[$type])) {
+        if (!$this->configProvider->isEnabled()) {
+            throw new StateException(__('The module is disabled.'));
+        }
+        $collector = $this->configProvider->getCollectorByType();
+        if (!$collector) {
+            $type = $this->configProvider->getCollectorType();
             throw new InvalidArgumentException(
                 __('Invalid price collector type: %type', ['type' => $type])
             );
         }
 
-        return $this->collectors[$type];
+        return $collector;
     }
 
     /**
      * Get the customer price collector if an error occurred, then return null
      *
-     * @param string|null $type
      * @return PriceCollectorInterface|null
      */
-    public function getWithNull(?string $type = null): ?PriceCollectorInterface
+    public function getWithNull(): ?PriceCollectorInterface
     {
         try {
-            return $this->get($type);
-        } catch (InvalidArgumentException) {
+            return $this->get();
+        } catch (InvalidArgumentException|StateException) {
             return null;
         }
     }

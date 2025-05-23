@@ -4,21 +4,29 @@ declare(strict_types=1);
 
 namespace EPuzzle\CustomerPrice\Model;
 
+use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollectorInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
- * Getting config values from the store configuration
+ * Getting config values for the customer price module
  */
 class ConfigProvider
 {
     /**
+     * @var bool|null
+     */
+    private ?bool $isConfigured = null;
+
+    /**
      * ConfigProvider
      *
      * @param ScopeConfigInterface $scopeConfig
+     * @param PriceCollectorInterface[] $collectors
      */
     public function __construct(
-        private readonly ScopeConfigInterface $scopeConfig
+        private readonly ScopeConfigInterface $scopeConfig,
+        private array $collectors = [],
     ) {
     }
 
@@ -38,6 +46,25 @@ class ConfigProvider
     }
 
     /**
+     * Is configured the module?
+     *
+     * @param int|null $websiteId
+     * @return bool
+     */
+    public function isConfigured(?int $websiteId = null): bool
+    {
+        if (null === $this->isConfigured) {
+            $this->isConfigured = $this->isEnabled($websiteId);
+            if ($this->isConfigured) {
+                $collector = $this->getCollectorByType();
+                $this->isConfigured = $collector instanceof PriceCollectorInterface;
+            }
+        }
+
+        return $this->isConfigured;
+    }
+
+    /**
      * Get the collector type for the customer prices
      *
      * @param int|null $websiteId
@@ -50,5 +77,18 @@ class ConfigProvider
             ScopeInterface::SCOPE_WEBSITES,
             $websiteId
         );
+    }
+
+    /**
+     * Get the customer price collector by the type
+     *
+     * @param string|null $type
+     * @return PriceCollectorInterface|null
+     */
+    public function getCollectorByType(?string $type = null): ?PriceCollectorInterface
+    {
+        $type = $type ?: $this->getCollectorType();
+
+        return $this->collectors[$type] ?? null;
     }
 }
