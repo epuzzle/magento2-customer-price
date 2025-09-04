@@ -23,6 +23,6 @@ Welcome to the Customer Prices installation! This module provides prices for cus
 * [User Guide](https://github.com/epuzzle/magento2-customer-price/wiki/User-Guide)
 
 # License
-Copyright (c) 2022 ePuzzle contributors.
+Copyright (c) 2025 ePuzzle contributors.
 The customer price module is [MIT licensed](./LICENSE).
-Project coordinator: &lt;dkaplin1994@gmail.com&gt;
+Project coordinator: &lt;dkaplinwdevs@gmail.com&gt;
