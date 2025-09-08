@@ -28,4 +28,4 @@ Welcome to the Customer Prices installation! This module provides prices for cus
 # License
 Copyright (c) 2025 ePuzzle contributors.
 The customer price module is [MIT licensed](./LICENSE).
-Project coordinator: &lt;dkaplinwdevs@gmail.com&gt;
+Project coordinator: &lt;support@epuzzle.org&gt;
