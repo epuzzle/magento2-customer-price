@@ -1,3 +1,9 @@
+2.0.1
+=============
+
+* Bugs fixed:
+    * Resolved issues with PHP8.4
+
 2.0.0
 =============
 

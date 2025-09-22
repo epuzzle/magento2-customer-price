@@ -13,7 +13,6 @@ use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollectorInterface;
 use EPuzzle\CustomerPrice\Pricing\Price\CustomerPrice\PriceCollectorProvider;
 use Magento\CatalogSearch\Model\Indexer\Fulltext\Action\DataProvider;
 use Magento\Elasticsearch\Model\ResourceModel\Index;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,7 +20,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @see CustomerPriceFieldsProvider
- *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
 class CustomerPriceFieldsProviderTest extends TestCase
@@ -30,42 +28,34 @@ class CustomerPriceFieldsProviderTest extends TestCase
      * @var CustomerPrice|MockObject
      */
     private CustomerPrice $resource;
-
     /**
      * @var Index|MockObject
      */
     private Index $priceResourceIndex;
-
     /**
      * @var DataProvider|MockObject
      */
     private DataProvider $dataProvider;
-
     /**
      * @var StoreManagerInterface|MockObject
      */
     private StoreManagerInterface $storeManager;
-
     /**
      * @var GetScopeCustomerIdsGroupIds|MockObject
      */
     private GetScopeCustomerIdsGroupIds $getScopeCustomerIdsGroupIds;
-
     /**
      * @var PriceCollectorInterface|MockObject
      */
     private PriceCollectorInterface $priceCollector;
-
     /**
      * @var PriceCollectorProvider|MockObject
      */
     private PriceCollectorProvider $priceCollectorProvider;
-
     /**
      * @var CustomerPriceFieldNameResolver
      */
     private CustomerPriceFieldNameResolver $customerPriceFieldNameResolver;
-
     /**
      * @var CustomerPriceFieldsProvider
      */
@@ -121,11 +111,12 @@ class CustomerPriceFieldsProviderTest extends TestCase
         string $attributeCode,
         array $expectedValue
     ): void {
-        $objectManager = new ObjectManager($this);
         $websiteId = $storeId;
         /** @var Store $store */
-        $store = $objectManager->getObject(Store::class);
-        $store->setWebsiteId($websiteId);
+        $store = $this->getMockBuilder(Store::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $store->expects($this->once())->method('getWebsiteId')->willReturn($websiteId);
         $this->storeManager->expects($this->once())
             ->method('getStore')
             ->with($storeId)
